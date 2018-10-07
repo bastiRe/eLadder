@@ -1,4 +1,4 @@
-# eladderApp
+# eladder
 
 [Website](https://eladder-app.com)
 
@@ -16,6 +16,13 @@ The eLadder project consists of two parts:
 ## Goal of this project
 
 This project was started as a side project to learn different new technologies (e.g. ReactNative, GraphQL). It's foremost purpose is to create a useful app for tracking games and establish leagues between friends in games like Fifa. Please be aware, that given this aim and the limited time available, this project might not always be the most consistent or use all best practices. Still, I hope that open sourcing this can give others inspiration on how to build an full-stack app with the used technologies.
+
+## Development
+
+For trying out the two parts of the eLadder see specific readmes:
+
+- [App readme](https://raw.githubusercontent.com/bastiRe/eladder/master/app/README.md)
+- [Server readme](https://raw.githubusercontent.com/bastiRe/eladder/master/server/README.md)
 
 ## License
 
