@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "eLadder",
+    "description":
+      "Create personal leagues to keep track of foosball or FIFA games. An ongoing, elo-based rating shows who's really the best in your league.",
+    "slug": "eLadder",
+    "privacy": "unlisted",
+    "sdkVersion": "29.0.0",
+    "version": "2.0.2",
+    "orientation": "portrait",
+    "primaryColor": "#33B67A",
+    "icon": "./assets/icons/icon.png",
+    "scheme": "eladder",
+    "assetBundlePatterns": ["assets/*"],
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#33B67A"
+    },
+    "notification": {
+      "icon": "./assets/icons/icon.png",
+      "color": "#33B67A"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf"]
+    },
+    "ios": {
+      "bundleIdentifier": "de.sebastianrehm.eladder",
+      "icon": "./assets/icons/ios-icon.png",
+      "buildNumber": "1.2",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "de.sebastianrehm.eladder",
+      "icon": "./assets/icons/icon.png",
+      "versionCode": 2
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "example-org",
+            "project": "eladderapp",
+            "authToken": "your-auth-token"
+          }
+        }
+      ]
+    },
+    "extra": {
+      "sentryUrl": "your-sentry-url",
+      "amplitudeKey": "your-amplitude-key",
+      "apiUrl": "your-api-url"
+    }
+  }
+}

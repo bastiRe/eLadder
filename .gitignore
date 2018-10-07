@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+.vscode/
+.expo/
+
+dist/
+postgres-data/
+
+# only example.app.json should be used
+app/app.json
