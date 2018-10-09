@@ -41,6 +41,9 @@ class LeagueScreen extends React.Component {
   };
 
   _openCreateGame(league) {
+    Amplitude.logEventWithProperties("OpenCreateGame", {
+      leagueId: league.id
+    });
     this.props.navigation.navigate("CreateGame", {
       players: league.players,
       leagueId: league.id
@@ -49,6 +52,9 @@ class LeagueScreen extends React.Component {
   }
 
   _openAddPlayer(league) {
+    Amplitude.logEventWithProperties("OpenCreatePlayer", {
+      leagueId: league.id
+    });
     this.props.navigation.navigate("AddPlayer", {
       players: league.players,
       leagueId: league.id
@@ -57,12 +63,15 @@ class LeagueScreen extends React.Component {
   }
 
   _openPlayer(player) {
-    if (this.props.navigation.isFocused()) {
-      this.props.navigation.navigate("Player", {
-        player,
-        leagueId: this.props.navigation.state.params.leagueId
-      });
-    }
+    const { leagueId } = this.props.navigation.state.params;
+    Amplitude.logEventWithProperties("OpenPlayer", {
+      leagueId,
+      playerId: player.id
+    });
+    this.props.navigation.navigate("Player", {
+      player,
+      leagueId: this.props.navigation.state.params.leagueId
+    });
   }
 
   _shareLeague = () => {

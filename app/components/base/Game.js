@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity } from "react-native";
 import moment from "moment";
+import { withNavigation } from "react-navigation";
 
 import { ErrorText, ScrollBackground, SectionHeaderText } from "../elements";
 import DeleteGameMutation from "../graphql/DeleteGameMutation";
@@ -37,4 +38,4 @@ const Game = ({ game, leagueId, navigation }) => {
   );
 };
 
-export default Game;
+export default withNavigation(Game);

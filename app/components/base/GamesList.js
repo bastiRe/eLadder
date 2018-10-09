@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { SectionList } from "react-native";
 import moment from "moment";
 import { withNavigation } from "react-navigation";
+import { Amplitude } from "expo";
 
 import GameRow from "./GameRow";
 import EmptyList from "./EmptyList";
@@ -25,6 +26,10 @@ class GamesList extends PureComponent {
   }
 
   _openGame(game) {
+    Amplitude.logEventWithProperties("OpenGame", {
+      leagueId: this.props.leagueId,
+      gameId: game.id
+    });
     this.props.navigation.navigate("Game", {
       game,
       leagueId: this.props.leagueId

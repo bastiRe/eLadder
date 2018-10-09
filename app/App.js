@@ -41,6 +41,8 @@ class App extends React.Component {
       );
     }
 
+    Amplitude.logEvent("OpenApp");
+
     return (
       <ApolloProvider client={client}>
         <View style={styles.container}>

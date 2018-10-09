@@ -1,6 +1,8 @@
 import { Alert } from "react-native";
 import React from "react";
 import { Mutation } from "react-apollo";
+import { Amplitude } from "expo";
+
 import LEAGUE from "../../graphql/League";
 import DELETE_GAME from "../../graphql/DeleteGame";
 
@@ -26,6 +28,10 @@ const DeleteGameMutation = ({ game, children, leagueId }) => {
                   text: "OK",
                   onPress: async () => {
                     await deleteGame({ variables: { id: game.id } });
+                    Amplitude.logEventWithProperties("DeleteGame", {
+                      gameId: game.id,
+                      leagueId
+                    });
                     resolve(true);
                   }
                 }
