@@ -51,19 +51,19 @@ const PlayerStatsCard = ({ player }) => {
           </LightText>
         </Row>
         <Row>
-          <Text>Goals (Shot/Conceded)</Text>)
+          <Text>Goals (Shot/Conceded)</Text>
           <LightText>
             {player.goalsShot}/{player.goalsConceded}
           </LightText>
         </Row>
         <Row>
-          <Text>Best against (Win-Percentage)</Text>)
+          <Text>Best against (Win-Percentage)</Text>
           <LightText>
             {victim && `${victim.name} (${victim.percentage * 100}%)`}
           </LightText>
         </Row>
         <Row>
-          <Text>Worst against (Win-Percentage)</Text>)
+          <Text>Worst against (Win-Percentage)</Text>
           <LightText>
             {nemesis && `${nemesis.name} (${nemesis.percentage * 100}%)`}
           </LightText>
