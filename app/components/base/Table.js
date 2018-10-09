@@ -14,6 +14,7 @@ class Table extends PureComponent {
     return (
       <View style={styles.container}>
         <FlatList
+          contentInset={{ bottom: 80 }}
           style={styles.container}
           data={this._sortedPlayers()}
           onRefresh={this.props.refetch}

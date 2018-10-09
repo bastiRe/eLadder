@@ -23,12 +23,28 @@ export const TitleText = styled.Text`
   color: ${Colors.Text};
 `;
 
+export const CenteredText = styled.Text`
+  text-align: center;
+`;
+
 export const LightText = styled.Text`
   color: ${Colors.LightText};
 `;
 
 export const ErrorText = styled.Text`
   color: ${Colors.Error};
+`;
+
+export const SectionHeaderText = styled.Text`
+  text-align: center;
+  padding-top: 15;
+  padding-bottom: 5;
+  color: ${Colors.LightText};
+  background-color: ${Colors.Background};
+`;
+
+export const HighlightedText = styled.Text`
+  color: ${Colors.Secondary};
 `;
 
 export const CardTitleText = styled.Text`

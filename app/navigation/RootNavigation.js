@@ -3,6 +3,7 @@ import { createStackNavigator } from "react-navigation";
 import LeaguesListScreen from "../components/screens/LeaguesListScreen";
 import LeagueScreen from "../components/screens/LeagueScreen";
 import PlayerScreen from "../components/screens/PlayerScreen";
+import GameScreen from "../components/screens/GameScreen";
 import CreateLeagueScreen from "../components/screens/CreateLeagueScreen";
 import AddPlayerScreen from "../components/screens/AddPlayerScreen";
 import CreateGameScreen from "../components/screens/CreateGameScreen";
@@ -20,6 +21,9 @@ const MainCardNavigator = createStackNavigator(
     },
     Player: {
       screen: PlayerScreen
+    },
+    Game: {
+      screen: GameScreen
     }
   },
   {

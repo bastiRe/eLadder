@@ -1,15 +1,17 @@
 import React, { PureComponent } from "react";
-import { StyleSheet, SectionList, View, Text } from "react-native";
+import { SectionList } from "react-native";
 import moment from "moment";
+import { withNavigation } from "react-navigation";
+
 import GameRow from "./GameRow";
 import EmptyList from "./EmptyList";
-import * as colors from "../../constants/Colors";
+import { Background, SectionHeaderText } from "../elements";
 
 class GamesList extends PureComponent {
   separatedGames() {
     // Games are coming in as ascending by date
     return this.props.games.reduceRight((memo, game) => {
-      const dateString = moment(game.date).format("MMMM D, YYYY");
+      const dateString = moment(game.date).format("MMMM Do YYYY");
       if (memo.length > 0 && memo[memo.length - 1].title === dateString) {
         memo[memo.length - 1].data.push(game);
       } else {
@@ -22,14 +24,21 @@ class GamesList extends PureComponent {
     }, []);
   }
 
+  _openGame(game) {
+    this.props.navigation.navigate("Game", {
+      game,
+      leagueId: this.props.leagueId
+    });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <Background>
         <SectionList
-          style={styles.container}
           sections={this.separatedGames()}
           onRefresh={this.props.refetch}
           refreshing={this.props.refreshing}
+          contentInset={{ bottom: 80 }}
           ListEmptyComponent={() => (
             <EmptyList
               title="No games"
@@ -38,33 +47,20 @@ class GamesList extends PureComponent {
           )}
           renderItem={data => (
             <GameRow
-              {...data.item}
+              game={data.item}
               leagueId={this.props.leagueId}
               key={data.index}
+              onPress={() => this._openGame(data.item)}
             />
           )}
           renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.sectionHeader}>{title}</Text>
+            <SectionHeaderText>{title}</SectionHeaderText>
           )}
           keyExtractor={(data, index) => index.toString()}
         />
-      </View>
+      </Background>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.Background
-  },
-  sectionHeader: {
-    textAlign: "center",
-    paddingTop: 15,
-    paddingBottom: 5,
-    color: colors.LightText,
-    backgroundColor: colors.Background
-  }
-});
-
-export default GamesList;
+export default withNavigation(GamesList);
