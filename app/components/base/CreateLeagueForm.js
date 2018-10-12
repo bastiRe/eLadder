@@ -1,11 +1,12 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Input from './Input';
-import Button from './Button';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import Input from "./Input";
+import Button from "./Button";
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center'
+    alignItems: "center",
+    padding: 20
   },
   button: {
     marginTop: 24
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
 
 class CreateLeagueForm extends React.Component {
   state = {
-    title: ''
+    title: ""
   };
 
   onSubmit() {
@@ -25,8 +26,8 @@ class CreateLeagueForm extends React.Component {
     return (
       <View style={styles.container}>
         <Input
-          autoCapitalize={'none'}
-          placeholder={'Title'}
+          autoCapitalize={"none"}
+          placeholder={"Title"}
           onChangeText={title => this.setState({ title })}
         />
         <Button

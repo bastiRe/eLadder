@@ -1,17 +1,12 @@
 import React from "react";
-import { StyleSheet, View, ActivityIndicator, Alert } from "react-native";
-import { graphql, compose } from "react-apollo";
-import { Amplitude } from "expo";
-import gql from "graphql-tag";
-import ADD_LEAGUE_ID from "../../graphql/AddLeagueId";
+import { StyleSheet, ActivityIndicator } from "react-native";
+
 import CreateLeagueForm from "../base/CreateLeagueForm";
+import CreateLeagueMutation from "../graphql/CreateLeagueMutation";
+import AddLeagueIdMutation from "../graphql/AddLeagueIdMutation";
+import { ModalBackground } from "../elements";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20
-  },
   header: {
     backgroundColor: "#fff",
     borderBottomWidth: 0,
@@ -25,52 +20,38 @@ class CreateLeagueScreen extends React.Component {
     headerStyle: styles.header
   };
 
-  state = {
-    loading: false
-  };
-
-  _createLeague = async ({ title }) => {
-    this.setState({ loading: true });
-    try {
-      const result = await this.props.createLeagueMutation({
-        variables: {
-          title
-        }
-      });
-      const leagueId = result.data.createLeague.league.id;
-      await this.props.addLeagueIdMutation({ variables: { leagueId } });
-      Amplitude.logEventWithProperties("CreateLeague", { leagueId });
-    } catch (e) {
-      Alert.alert(e.message.replace("GraphQL error: ", ""));
-    }
-    this.setState({ loading: false });
-    this.props.navigation.goBack();
-  };
-
   render() {
-    let content;
-    if (this.state.loading) {
-      content = <ActivityIndicator />;
-    } else {
-      content = (
-        <CreateLeagueForm onSubmit={values => this._createLeague(values)} />
-      );
-    }
-    return <View style={styles.container}>{content}</View>;
+    return (
+      <AddLeagueIdMutation onCompleted={() => this.props.navigation.goBack()}>
+        {(addLeagueId, options) => (
+          <CreateLeagueMutation
+            onCompleted={data => {
+              addLeagueId({ leagueId: data.createLeague.league.id });
+            }}
+          >
+            {(createLeague, { loading }) => {
+              let content;
+
+              if (loading || options.loading) {
+                content = <ActivityIndicator />;
+              } else {
+                content = (
+                  <CreateLeagueForm
+                    onSubmit={({ title }) => createLeague({ title })}
+                  />
+                );
+              }
+              return (
+                <ModalBackground style={styles.container}>
+                  {content}
+                </ModalBackground>
+              );
+            }}
+          </CreateLeagueMutation>
+        )}
+      </AddLeagueIdMutation>
+    );
   }
 }
 
-const CREATE_LEAGUE = gql`
-  mutation CreateLeague($title: String!) {
-    createLeague(title: $title) {
-      league {
-        id
-      }
-    }
-  }
-`;
-
-export default compose(
-  graphql(CREATE_LEAGUE, { name: "createLeagueMutation" }),
-  graphql(ADD_LEAGUE_ID, { name: "addLeagueIdMutation" })
-)(CreateLeagueScreen);
+export default CreateLeagueScreen;

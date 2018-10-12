@@ -4,8 +4,9 @@ import { Platform } from "react-native";
 const ENV = {
   dev: {
     // Genymotion accesses localhost through 10.0.3.2
-    apiUrl:
-      Platform.OS === "ios" ? "http://localhost:3000" : "http://10.0.3.2:3000"
+    // apiUrl:
+    //   Platform.OS === "ios" ? "http://localhost:3000" : "http://10.0.3.2:3000"
+    apiUrl: "http://192.168.178.23:3000"
   },
   prod: {
     apiUrl: Constants.manifest.extra.apiUrl

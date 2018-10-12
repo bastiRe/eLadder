@@ -24,6 +24,10 @@ class LeaguesListScreen extends Component {
     }
   }
 
+  _openLeagueScanner() {
+    this.props.navigation.navigate("LeagueScanner");
+  }
+
   _openCreateLeague() {
     this.props.navigation.navigate("CreateLeague");
   }
@@ -39,7 +43,9 @@ class LeaguesListScreen extends Component {
           if (!data.leagueIds)
             return <ActivityIndicator style={{ marginTop: 40 }} />;
 
-          const leagueIds = data.leagueIds;
+          const leagueIds = data.leagueIds.filter(
+            leagueId => leagueId !== null
+          );
           return (
             <Query
               query={LEAGUES}
@@ -63,7 +69,8 @@ class LeaguesListScreen extends Component {
                       <LeaguesList
                         leagues={data.leagues}
                         openLeague={id => this._openLeague(id, data.leagues)}
-                        openCreateLeague={() => this._openCreateLeague()}
+                        openLeagueScanner={this._openLeagueScanner.bind(this)}
+                        openCreateLeague={this._openCreateLeague.bind(this)}
                         refreshing={networkStatus === 4}
                         refetch={refetch}
                       />

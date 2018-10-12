@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, Share, ActivityIndicator } from "react-native";
+import { StyleSheet, ActivityIndicator } from "react-native";
 import { Amplitude } from "expo";
 import { Query } from "react-apollo";
-import { Feather } from "@expo/vector-icons";
-import HeaderButtons from "react-navigation-header-buttons";
+
 import League from "../base/League";
 import LEAGUE from "../../graphql/League";
 import * as Colors from "../../constants/Colors";
 import computeStandings from "../../helpers/computeStandings";
+import LeagueOptions from "../base/LeagueOptions";
 
 class LeagueScreen extends React.Component {
   state = {
@@ -20,22 +20,12 @@ class LeagueScreen extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const params = navigation.state.params || {};
+    const { leagueId, leagueTitle } = navigation.state.params;
     return {
       title: navigation.state.params.leagueTitle,
       headerStyle: styles.header,
       headerRight: (
-        <HeaderButtons
-          IconComponent={Feather}
-          iconSize={23}
-          color={Colors.TextOnPrimary}
-        >
-          <HeaderButtons.Item
-            title="share league"
-            onPress={params.shareLeague}
-            iconName="share"
-          />
-        </HeaderButtons>
+        <LeagueOptions leagueId={leagueId} leagueTitle={leagueTitle} />
       )
     };
   };
@@ -61,30 +51,6 @@ class LeagueScreen extends React.Component {
     });
     setTimeout(() => this.setState({ selectedTab: "Table" }), 200);
   }
-
-  _openPlayer(player) {
-    const { leagueId } = this.props.navigation.state.params;
-    Amplitude.logEventWithProperties("OpenPlayer", {
-      leagueId,
-      playerId: player.id
-    });
-    this.props.navigation.navigate("Player", {
-      player,
-      leagueId: this.props.navigation.state.params.leagueId
-    });
-  }
-
-  _shareLeague = () => {
-    const { leagueId, leagueTitle } = this.props.navigation.state.params;
-    const url = "https://eladder-app.com/add_league?";
-    Share.share({
-      message: `${url}leagueId=${leagueId}&leagueTitle=${leagueTitle}`,
-      title: "Sharing eLadder league"
-    }).then(() => {
-      // No way on Android to discover if the share was successful
-      Amplitude.logEventWithProperties("AttemptedToShareLeague", { leagueId });
-    });
-  };
 
   render() {
     const leagueId = this.props.navigation.state.params.leagueId;

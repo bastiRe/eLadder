@@ -49,17 +49,19 @@ const stateLink = withClientState({
   resolvers: {
     Mutation: {
       addLeagueId: (_, { leagueId }, { cache }) => {
-        const query = gql`
-          query GetLeagueIds {
-            leagueIds @client
-          }
-        `;
-        const previous = cache.readQuery({ query });
+        if (leagueId) {
+          const query = gql`
+            query GetLeagueIds {
+              leagueIds @client
+            }
+          `;
+          const previous = cache.readQuery({ query });
 
-        const data = {
-          leagueIds: previous.leagueIds.concat([leagueId])
-        };
-        cache.writeData({ data });
+          const data = {
+            leagueIds: previous.leagueIds.concat([leagueId])
+          };
+          cache.writeData({ data });
+        }
         return null;
       },
       removeLeagueId: (_, { leagueId }, { cache }) => {

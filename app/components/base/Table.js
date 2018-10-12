@@ -1,8 +1,12 @@
 import React, { PureComponent } from "react";
 import { StyleSheet, FlatList, View, Text } from "react-native";
+import { Amplitude } from "expo";
+import { withNavigation } from "react-navigation";
+
 import PlayerRow from "../base/PlayerRow";
 import * as Colors from "../../constants/Colors";
 import EmptyList from "../base/EmptyList";
+import { Background } from "../elements";
 
 class Table extends PureComponent {
   _sortedPlayers() {
@@ -10,12 +14,23 @@ class Table extends PureComponent {
     return players.sort((playerA, playerB) => playerB.points - playerA.points);
   }
 
+  _openPlayer(player) {
+    const { leagueId } = this.props.leagueId;
+    Amplitude.logEventWithProperties("OpenPlayer", {
+      leagueId,
+      playerId: player.id
+    });
+    this.props.navigation.navigate("Player", {
+      player,
+      leagueId
+    });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <Background>
         <FlatList
           contentInset={{ bottom: 80 }}
-          style={styles.container}
           data={this._sortedPlayers()}
           onRefresh={this.props.refetch}
           refreshing={this.props.refreshing}
@@ -41,21 +56,17 @@ class Table extends PureComponent {
               rank={data.index + 1}
               key={data.index}
               leagueId={this.props.leagueId}
-              openPlayer={this.props.openPlayer}
+              openPlayer={this._openPlayer.bind(this)}
             />
           )}
           keyExtractor={(data, index) => index.toString()}
         />
-      </View>
+      </Background>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.Background
-  },
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -85,4 +96,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Table;
+export default withNavigation(Table);

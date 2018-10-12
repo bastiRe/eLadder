@@ -6,6 +6,8 @@ import PlayerScreen from "../components/screens/PlayerScreen";
 import GameScreen from "../components/screens/GameScreen";
 import CreateLeagueScreen from "../components/screens/CreateLeagueScreen";
 import AddPlayerScreen from "../components/screens/AddPlayerScreen";
+import ShareLeagueScreen from "../components/screens/ShareLeagueScreen";
+import LeagueScannerScreen from "../components/screens/LeagueScannerScreen";
 import CreateGameScreen from "../components/screens/CreateGameScreen";
 import CloseButton from "../components/base/CloseButton";
 
@@ -52,6 +54,12 @@ const MainModalNavigator = createStackNavigator(
     },
     AddPlayer: {
       screen: AddPlayerScreen
+    },
+    LeagueScanner: {
+      screen: LeagueScannerScreen
+    },
+    ShareLeague: {
+      screen: ShareLeagueScreen
     }
   },
   {

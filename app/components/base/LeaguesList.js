@@ -1,8 +1,10 @@
 import React, { PureComponent } from "react";
 import { FlatList, Platform } from "react-native";
+import ActionButton from "react-native-action-button";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+
 import LeagueItem from "../base/LeagueItem";
 import * as Colors from "../../constants/Colors";
-import ActionButton from "react-native-action-button";
 import EmptyList from "../base/EmptyList";
 import { Background } from "../elements";
 
@@ -31,10 +33,34 @@ class LeaguesList extends PureComponent {
           keyExtractor={(data, index) => index.toString()}
         />
         <ActionButton
-          onPress={this.props.openCreateLeague}
-          buttonColor={Colors.Primary}
           position={Platform.OS === "ios" ? "center" : "right"}
-        />
+          buttonColor={Colors.Primary}
+        >
+          <ActionButton.Item
+            buttonColor={Colors.Secondary}
+            onPress={this.props.openLeagueScanner}
+            title="Add with QR-Code"
+          >
+            <MaterialCommunityIcons
+              name="qrcode-scan"
+              size={24}
+              color={Colors.TextOnPrimary}
+              style={{ marginTop: 2 }}
+            />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor={Colors.Secondary}
+            onPress={this.props.openCreateLeague}
+            title="Create new league"
+          >
+            <MaterialIcons
+              name="playlist-add"
+              size={24}
+              color={Colors.TextOnPrimary}
+              style={{ marginTop: 2 }}
+            />
+          </ActionButton.Item>
+        </ActionButton>
       </Background>
     );
   }

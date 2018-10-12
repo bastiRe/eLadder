@@ -7,6 +7,11 @@ export const Background = styled.View`
   background-color: ${Colors.Background};
 `;
 
+export const ModalBackground = styled.View`
+  flex: 1;
+  background-color: ${Colors.TextOnPrimary};
+`;
+
 export const ScrollBackground = styled.View`
   flex: 1;
   background-color: ${Colors.Background};
@@ -18,12 +23,11 @@ export const Text = styled.Text`
   color: ${Colors.Text};
 `;
 
-export const TitleText = styled.Text`
+export const TitleText = styled(Text)`
   font-size: 18;
-  color: ${Colors.Text};
 `;
 
-export const CenteredText = styled.Text`
+export const CenteredText = styled(Text)`
   text-align: center;
 `;
 
