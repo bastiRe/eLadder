@@ -1,14 +1,31 @@
 import React from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
 import styled from "styled-components";
 
 import { CenteredText } from "../elements";
 
-const Container = styled(View)`
+const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`;
+
+const OverlayContainer = styled.View`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Overlay = styled.View`
+  width: 240px;
+  height: 240px;
+  border-radius: 16px;
+  border: 3px solid white;
 `;
 
 class CreateLeagueForm extends React.Component {
@@ -69,11 +86,16 @@ class CreateLeagueForm extends React.Component {
       );
     } else {
       content = (
-        <BarCodeScanner
-          style={StyleSheet.absoluteFillObject}
-          onBarCodeRead={this._handleBarCodeRead}
-          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-        />
+        <React.Fragment>
+          <BarCodeScanner
+            style={StyleSheet.absoluteFillObject}
+            onBarCodeRead={this._handleBarCodeRead}
+            barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+          />
+          <OverlayContainer>
+            <Overlay />
+          </OverlayContainer>
+        </React.Fragment>
       );
     }
 
