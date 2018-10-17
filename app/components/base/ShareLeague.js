@@ -43,11 +43,17 @@ const PaddedView = styled(View)`
 `;
 
 class ShareLeague extends React.Component {
+  constructor(props) {
+    super(props);
+    const { leagueId, leagueTitle } = props;
+    this.state = {
+      url: `https://eladder-app.com/add_league?leagueId=${leagueId}&leagueTitle=${leagueTitle}`
+    };
+  }
   _openShareDialog() {
-    const { leagueId, leagueTitle } = this.props;
-    const url = "https://eladder-app.com/add_league?";
+    const { leagueId } = this.props;
     Share.share({
-      message: `${url}leagueId=${leagueId}&leagueTitle=${leagueTitle}`,
+      message: this.state.url,
       title: "Sharing eLadder league"
     }).then(() => {
       // No way on Android to discover if the share was successful
@@ -56,7 +62,7 @@ class ShareLeague extends React.Component {
   }
 
   render() {
-    const { leagueId, leagueTitle } = this.props;
+    const { leagueTitle } = this.props;
     return (
       <Container>
         <PaddedText>You can share {leagueTitle} League in two ways:</PaddedText>
@@ -72,11 +78,7 @@ class ShareLeague extends React.Component {
         </Row>
         <PaddedText>Scan the QR Code with another eLadder app:</PaddedText>
         <PaddedView>
-          <QRCode
-            value={JSON.stringify({ leagueId, leagueTitle })}
-            size={160}
-            bgColor={Colors.Text}
-          />
+          <QRCode value={this.state.url} size={160} bgColor={Colors.Text} />
         </PaddedView>
       </Container>
     );

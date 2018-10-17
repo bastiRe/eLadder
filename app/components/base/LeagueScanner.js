@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Alert } from "react-native";
 import { BarCodeScanner, Permissions } from "expo";
 import styled from "styled-components";
+import parseUrl from "url-parse";
 
 import { CenteredText } from "../elements";
 
@@ -46,9 +47,11 @@ class CreateLeagueForm extends React.Component {
   };
 
   _handleBarCodeRead = ({ data }) => {
-    const { leagueId, leagueTitle } = JSON.parse(data);
+    const { hostname, query } = parseUrl(data, true);
+    const { leagueId, leagueTitle } = query;
+    const validUrl = hostname === "eladder-app.com" && leagueTitle && leagueId;
 
-    if (leagueId && leagueTitle && this.state.alertOpen === false) {
+    if (validUrl && this.state.alertOpen === false) {
       this.setState({ alertOpen: true });
       Alert.alert(
         `Add league?`,
