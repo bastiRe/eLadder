@@ -1,28 +1,35 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React from "react";
+import styled from "styled-components";
+import { Text } from "../elements";
 
-const styles = StyleSheet.create({
-  team: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-around'
-  },
-  player: {
-    height: 20
-  }
-});
+const Container = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+`;
 
-export default ({ team, align = 'left' }) => {
+const Name = styled(Text)`
+  height: 20px;
+`;
+
+const Team = ({ team, align = "left" }) => {
   const playerAlign = {
-    textAlign: align === 'left' ? 'left' : 'right'
+    textAlign: align === "left" ? "left" : "right"
   };
   return (
-    <View style={styles.team}>
+    <Container>
       {team.map(p => (
-        <Text key={p.name} style={[styles.player, playerAlign]}>
+        <Name
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          key={p.name}
+          style={[playerAlign]}
+        >
           {p.name}
-        </Text>
+        </Name>
       ))}
-    </View>
+    </Container>
   );
 };
+
+export default Team;

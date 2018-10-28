@@ -12,12 +12,12 @@ const RowContainer = styled(Row)`
 
 const Points = styled(HighlightedText)`
   text-align: center;
-  height: 20;
-  width: 50;
+  height: 20px;
+  width: 50px;
 `;
 
-const ScoreContainer = styled.View`
-  width: 40;
+const ScoreText = styled(CenteredText)`
+  width: 60px;
 `;
 
 const GameRow = ({ game, leagueId, onPress }) => {
@@ -32,12 +32,10 @@ const GameRow = ({ game, leagueId, onPress }) => {
                 {Math.abs(game.points)}
               </Points>
               <Team team={game.teams[0].players} />
-              <ScoreContainer>
-                <CenteredText>
-                  {" "}
-                  {game.teams[0].score}:{game.teams[1].score}{" "}
-                </CenteredText>
-              </ScoreContainer>
+              <ScoreText>
+                {" "}
+                {game.teams[0].score}:{game.teams[1].score}{" "}
+              </ScoreText>
               <Team team={game.teams[1].players} align="right" />
               <Points>
                 {game.points <= 0 ? "+" : "-"}
