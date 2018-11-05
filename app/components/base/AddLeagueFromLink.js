@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Linking } from "react-native";
 import { compose, graphql } from "react-apollo";
-import Expo, { Amplitude } from "expo";
+import * as Expo from "expo";
 import ADD_LEAGUE_ID from "../../graphql/AddLeagueId";
 
 class AddLeagueFromLink extends React.Component {
@@ -26,7 +26,7 @@ class AddLeagueFromLink extends React.Component {
           {
             text: "Yes",
             onPress: async () => {
-              Amplitude.logEventWithProperties("AddLeagueFromLink", {
+              Expo.Amplitude.logEventWithProperties("AddLeagueFromLink", {
                 leagueId
               });
               await this.props.addLeagueIdMutation({ variables: { leagueId } });

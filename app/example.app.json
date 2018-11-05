@@ -5,7 +5,7 @@
       "Create personal leagues to keep track of foosball or FIFA games. An ongoing, elo-based rating shows who's really the best in your league.",
     "slug": "eLadder",
     "privacy": "unlisted",
-    "sdkVersion": "29.0.0",
+    "sdkVersion": "31.0.0",
     "version": "2.0.2",
     "orientation": "portrait",
     "primaryColor": "#33B67A",
