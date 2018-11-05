@@ -1,28 +1,20 @@
 import React from "react";
-import { StyleSheet, View, ActivityIndicator, Alert } from "react-native";
+import { ActivityIndicator, Alert } from "react-native";
 import { Amplitude } from "expo";
 import { Mutation } from "react-apollo";
 import LEAGUE from "../../graphql/League";
 import CREATE_GAME from "../../graphql/CreateGame";
 import CreateGameForm from "../base/CreateGameForm";
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20
-  },
-  header: {
-    backgroundColor: "#fff",
-    borderBottomWidth: 0,
-    elevation: 0
-  }
-});
+import { ModalBackground } from "../elements";
 
 class CreateGameScreen extends React.Component {
   static navigationOptions = {
     title: "Create Game",
-    headerStyle: styles.header
+    headerStyle: {
+      backgroundColor: "#fff",
+      borderBottomWidth: 0,
+      elevation: 0
+    }
   };
 
   render() {
@@ -60,7 +52,7 @@ class CreateGameScreen extends React.Component {
               />
             );
           }
-          return <View style={styles.container}>{content}</View>;
+          return <ModalBackground>{content}</ModalBackground>;
         }}
       </Mutation>
     );

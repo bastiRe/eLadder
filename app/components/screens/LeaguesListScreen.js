@@ -4,8 +4,8 @@ import { ActivityIndicator } from "react-native";
 import { Amplitude } from "expo";
 
 import LeaguesList from "../base/LeaguesList";
+import LeaguesQuery from "../graphql/LeaguesQuery";
 import AddLeagueFromLink from "../base/AddLeagueFromLink.js";
-import LEAGUES from "../../graphql/Leagues.js";
 import LEAGUE_IDS from "../../graphql/LeagueIds";
 
 class LeaguesListScreen extends Component {
@@ -47,12 +47,8 @@ class LeaguesListScreen extends Component {
             leagueId => leagueId !== null
           );
           return (
-            <Query
-              query={LEAGUES}
-              variables={{ leagueIds }}
-              fetchPolicy="cache-and-network"
-            >
-              {({ loading, error, data, refetch, networkStatus }) => {
+            <LeaguesQuery leagueIds={leagueIds}>
+              {({ data, refetch, networkStatus }) => {
                 let content;
                 if (!data || data.loading) {
                   content = <ActivityIndicator style={{ marginTop: 40 }} />;
@@ -80,7 +76,7 @@ class LeaguesListScreen extends Component {
 
                 return content;
               }}
-            </Query>
+            </LeaguesQuery>
           );
         }}
       </Query>

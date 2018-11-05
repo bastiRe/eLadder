@@ -1,6 +1,6 @@
 import React from "react";
 import { Share, View } from "react-native";
-import { Amplitude } from "expo";
+import { Amplitude, takeSnapshotAsync, Permissions, MediaLibrary } from "expo";
 import styled from "styled-components";
 import QRCode from "react-native-qrcode";
 
@@ -39,13 +39,15 @@ const PaddedButton = styled(Button)`
 `;
 
 const PaddedView = styled(View)`
-  margin-top: 40px;
+  margin-top: 20px;
+  padding: 20px;
 `;
 
 class ShareLeague extends React.Component {
   constructor(props) {
     super(props);
     const { leagueId, leagueTitle } = props;
+    this.qrCodeRef = React.createRef();
     this.state = {
       url: `https://eladder-app.com/add_league?leagueId=${leagueId}&leagueTitle=${leagueTitle}`
     };
@@ -59,6 +61,20 @@ class ShareLeague extends React.Component {
       // No way on Android to discover if the share was successful
       Amplitude.logEventWithProperties("AttemptedToShareLeague", { leagueId });
     });
+  }
+
+  async _takeScreenshot() {
+    const { leagueId } = this.props;
+    Amplitude.logEventWithProperties("TakeQrCodeScreenshot", { leagueId });
+    const permission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    if (permission.status === "granted") {
+      const uri = await takeSnapshotAsync(this.qrCodeRef.current, {
+        format: "png",
+        result: "file"
+      });
+      await MediaLibrary.createAssetAsync(uri);
+    }
   }
 
   render() {
@@ -77,9 +93,14 @@ class ShareLeague extends React.Component {
           <Divider />
         </Row>
         <PaddedText>Scan the QR Code with another eLadder app:</PaddedText>
-        <PaddedView>
+        <PaddedView ref={this.qrCodeRef}>
           <QRCode value={this.state.url} size={160} bgColor={Colors.Text} />
         </PaddedView>
+        <PaddedButton
+          title="Save QR-Code"
+          type="primary"
+          onPress={this._takeScreenshot.bind(this)}
+        />
       </Container>
     );
   }
