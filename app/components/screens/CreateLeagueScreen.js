@@ -26,7 +26,8 @@ class CreateLeagueScreen extends React.Component {
         {(addLeagueId, options) => (
           <CreateLeagueMutation
             onCompleted={data => {
-              addLeagueId({ leagueId: data.createLeague.league.id });
+              const leagueId = data.createLeague.league.id;
+              addLeagueId({ leagueId });
             }}
           >
             {(createLeague, { loading }) => {
