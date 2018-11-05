@@ -1,9 +1,7 @@
 import React from "react";
 import { ActivityIndicator, Alert } from "react-native";
-import { Amplitude } from "expo";
-import { Mutation } from "react-apollo";
-import LEAGUE from "../../graphql/League";
-import CREATE_GAME from "../../graphql/CreateGame";
+
+import CreateGameMutation from "../graphql/CreateGameMutation";
 import CreateGameForm from "../base/CreateGameForm";
 import { ModalBackground } from "../elements";
 
@@ -20,13 +18,9 @@ class CreateGameScreen extends React.Component {
   render() {
     const leagueId = this.props.navigation.state.params.leagueId;
     return (
-      <Mutation
-        mutation={CREATE_GAME}
-        refetchQueries={[{ query: LEAGUE, variables: { leagueId } }]}
-        onCompleted={() => {
-          this.props.navigation.goBack();
-          Amplitude.logEventWithProperties("CreateGame", { leagueId });
-        }}
+      <CreateGameMutation
+        leagueId={leagueId}
+        onCompleted={() => this.props.navigation.goBack()}
       >
         {(createGame, { data, loading }) => {
           let content;
@@ -39,11 +33,9 @@ class CreateGameScreen extends React.Component {
                 onSubmit={async ({ teamIds, date }) => {
                   try {
                     await createGame({
-                      variables: {
-                        teamIds,
-                        leagueId,
-                        date
-                      }
+                      teamIds,
+                      leagueId,
+                      date
                     });
                   } catch (e) {
                     Alert.alert(e.message.replace("GraphQL error: ", ""));
@@ -54,7 +46,7 @@ class CreateGameScreen extends React.Component {
           }
           return <ModalBackground>{content}</ModalBackground>;
         }}
-      </Mutation>
+      </CreateGameMutation>
     );
   }
 }
