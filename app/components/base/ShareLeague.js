@@ -40,6 +40,7 @@ const PaddedButton = styled(Button)`
 
 const PaddedView = styled(View)`
   margin-top: 20px;
+  background-color: white;
   padding: 20px;
 `;
 
