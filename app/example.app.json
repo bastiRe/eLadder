@@ -27,9 +27,13 @@
     "ios": {
       "bundleIdentifier": "de.sebastianrehm.eladder",
       "icon": "./assets/icons/ios-icon.png",
-      "buildNumber": "1.2",
+      "buildNumber": "1.2.1",
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "NSCameraUsageDescription":
+          "This app uses the camera to scan qr codes to add other user's leagues."
       }
     },
     "android": {

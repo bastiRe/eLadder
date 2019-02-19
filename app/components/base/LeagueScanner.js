@@ -92,7 +92,7 @@ class CreateLeagueForm extends React.Component {
         <React.Fragment>
           <BarCodeScanner
             style={StyleSheet.absoluteFillObject}
-            onBarCodeRead={this._handleBarCodeRead}
+            onBarCodeScanned={this._handleBarCodeRead}
             barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
           />
           <OverlayContainer>

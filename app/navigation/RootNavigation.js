@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 import LeaguesListScreen from "../components/screens/LeaguesListScreen";
 import LeagueScreen from "../components/screens/LeagueScreen";
 import PlayerScreen from "../components/screens/PlayerScreen";
@@ -29,7 +29,7 @@ const MainCardNavigator = createStackNavigator(
     }
   },
   {
-    navigationOptions: () => ({
+    defaultNavigationOptions: () => ({
       headerStyle: {
         backgroundColor: Colors.Primary
       },
@@ -64,7 +64,7 @@ const MainModalNavigator = createStackNavigator(
   },
   {
     mode: "modal",
-    navigationOptions: ({ navigation }) => ({
+    defaultNavigationOptions: ({ navigation }) => ({
       headerLeft: <CloseButton onPress={() => navigation.goBack()} />,
       headerTitleStyle: {
         fontWeight: "normal"
@@ -78,8 +78,10 @@ const MainModalNavigator = createStackNavigator(
   }
 );
 
+const AppContainer = createAppContainer(MainModalNavigator);
+
 export default class RootNavigator extends React.Component {
   render() {
-    return <MainModalNavigator />;
+    return <AppContainer />;
   }
 }

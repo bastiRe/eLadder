@@ -1,16 +1,13 @@
 import React from "react";
-import { Share, View } from "react-native";
-import { Amplitude, takeSnapshotAsync, Permissions, MediaLibrary } from "expo";
+import { Alert, Share, ScrollView, CameraRoll } from "react-native";
+import Sentry from "sentry-expo";
+import { Amplitude, takeSnapshotAsync, Permissions } from "expo";
 import styled from "styled-components";
 import QRCode from "react-native-qrcode";
 
 import Button from "./Button";
 import { LightText, TitleText } from "../elements";
 import Colors from "../../constants/Colors";
-
-const Container = styled.View`
-  align-items: center;
-`;
 
 const Divider = styled.View`
   height: 1px;
@@ -38,7 +35,7 @@ const PaddedButton = styled(Button)`
   margin: 20px 0;
 `;
 
-const PaddedView = styled(View)`
+const PaddedView = styled.View`
   margin-top: 20px;
   background-color: white;
   padding: 20px;
@@ -66,22 +63,27 @@ class ShareLeague extends React.Component {
 
   async _takeScreenshot() {
     const { leagueId } = this.props;
+
     Amplitude.logEventWithProperties("TakeQrCodeScreenshot", { leagueId });
     const permission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
     if (permission.status === "granted") {
-      const uri = await takeSnapshotAsync(this.qrCodeRef.current, {
-        format: "png",
-        result: "file"
-      });
-      await MediaLibrary.createAssetAsync(uri);
+      try {
+        const uri = await takeSnapshotAsync(this.qrCodeRef, {
+          format: "png"
+        });
+        await CameraRoll.saveToCameraRoll(uri);
+        Alert.alert("QR-Code successfully saved.");
+      } catch (error) {
+        Sentry.captureException(error);
+      }
     }
   }
 
   render() {
     const { leagueTitle } = this.props;
     return (
-      <Container>
+      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <PaddedText>You can share {leagueTitle} League in two ways:</PaddedText>
         <PaddedButton
           title="Share link"
@@ -102,7 +104,7 @@ class ShareLeague extends React.Component {
           type="primary"
           onPress={this._takeScreenshot.bind(this)}
         />
-      </Container>
+      </ScrollView>
     );
   }
 }
