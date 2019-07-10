@@ -56,7 +56,10 @@
     "extra": {
       "sentryUrl": "your-sentry-url",
       "amplitudeKey": "your-amplitude-key",
-      "apiUrl": "your-api-url"
+      "apiUrl": {
+        "dev": "your-local-server-ip",
+        "prod": "your-server-ip"
+      }
     }
   }
 }
