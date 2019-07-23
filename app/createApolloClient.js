@@ -1,6 +1,6 @@
 import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
-import { SecureStore } from "expo";
+import * as SecureStore from 'expo-secure-store';
 import { createHttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { setContext } from "apollo-link-context";

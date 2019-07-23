@@ -1,5 +1,5 @@
 import React from "react";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 import { withNavigation } from "react-navigation";
 
 import HeaderDropdown from "../base/HeaderDropdown";

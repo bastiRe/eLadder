@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { SectionList } from "react-native";
 import moment from "moment";
 import { withNavigation } from "react-navigation";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 
 import GameRow from "./GameRow";
 import EmptyList from "./EmptyList";

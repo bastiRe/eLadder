@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert } from "react-native";
 import { Mutation } from "react-apollo";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 import gql from "graphql-tag";
 
 const REMOVE_LEAGUE_ID = gql`

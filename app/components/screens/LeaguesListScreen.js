@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import { Query } from "react-apollo";
 import { ActivityIndicator } from "react-native";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 
 import LeaguesList from "../base/LeaguesList";
 import LeaguesQuery from "../graphql/LeaguesQuery";

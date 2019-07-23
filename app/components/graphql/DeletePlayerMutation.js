@@ -1,7 +1,7 @@
 import { Alert } from "react-native";
 import React from "react";
 import { Mutation } from "react-apollo";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 
 import LEAGUE from "../../graphql/League";
 import DELETE_PLAYER from "../../graphql/DeletePlayer";

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 import { Query } from "react-apollo";
 
 import League from "../base/League";

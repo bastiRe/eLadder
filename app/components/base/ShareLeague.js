@@ -1,7 +1,9 @@
 import React from "react";
 import { Alert, Share, ScrollView, CameraRoll } from "react-native";
 import Sentry from "sentry-expo";
-import { Amplitude, takeSnapshotAsync, Permissions } from "expo";
+import { takeSnapshotAsync } from "expo";
+import * as Permissions from 'expo-permissions';
+import * as Amplitude from 'expo-analytics-amplitude';
 import styled from "styled-components";
 import QRCode from "react-native-qrcode";
 

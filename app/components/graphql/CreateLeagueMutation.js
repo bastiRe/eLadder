@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 
 import CREATE_LEAGUE from "../../graphql/CreateLeague";
 

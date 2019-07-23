@@ -1,7 +1,10 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { ApolloProvider } from "react-apollo";
-import { Amplitude, AppLoading, Font, Constants } from "expo";
+import { AppLoading } from "expo";
+import Constants from 'expo-constants';
+import * as Font from 'expo-font';
+import * as Amplitude from 'expo-analytics-amplitude';
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import Sentry from "sentry-expo";
 

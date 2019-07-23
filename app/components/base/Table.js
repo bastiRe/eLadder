@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { StyleSheet, FlatList, View, Text } from "react-native";
-import { Amplitude } from "expo";
+import * as Amplitude from 'expo-analytics-amplitude';
 import { withNavigation } from "react-navigation";
 
 import PlayerRow from "../base/PlayerRow";

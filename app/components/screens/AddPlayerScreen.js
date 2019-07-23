@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Mutation } from 'react-apollo';
-import { Amplitude } from 'expo';
+import * as Amplitude from 'expo-analytics-amplitude';
 import LEAGUE from '../../graphql/League';
 import CREATE_PLAYER from '../../graphql/CreatePlayer';
 import AddPlayerForm from '../base/AddPlayerForm';
