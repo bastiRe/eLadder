@@ -8,7 +8,7 @@
     "serve": "node ./dist/index.js"
   },
   "dependencies": {
-    "apollo-server": "^2.0.4",
+    "apollo-server": "^2.14.2",
     "dataloader": "^1.4.0",
     "graphql": "^0.13.2",
     "knex": "^0.14.6",
