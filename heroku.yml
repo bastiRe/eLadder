@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: server/Dockerfile
+run:
+  web: yarn run serve
