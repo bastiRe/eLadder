@@ -19,7 +19,10 @@ types.setTypeParser(TIMESTAMP_OID, parseFn);
 // Use pg with knex
 const knex = Knex({
   client: "pg",
-  connection: process.env.DATABASE_URL,
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+  },
   debug: process.env.NODE_ENV === "development"
 });
 
