@@ -8,13 +8,13 @@
     "serve": "node ./dist/index.js"
   },
   "dependencies": {
-    "apollo-server": "^2.0.4",
+    "apollo-server": "^2.25.3",
     "dataloader": "^1.4.0",
-    "graphql": "^0.13.2",
-    "knex": "^0.14.6",
+    "graphql": "^15.5.1",
+    "knex": "^0.95.15",
     "moment": "^2.22.2",
-    "objection": "^1.1.10",
-    "pg": "^7.4.2",
+    "objection": "^2.2.9",
+    "pg": "^8.7.1",
     "raven": "^2.6.3",
     "shortid": "^2.2.8"
   },

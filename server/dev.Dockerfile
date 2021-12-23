@@ -1,4 +1,4 @@
-FROM node:8.9.4-alpine
+FROM node:16.13.1-alpine
 
 WORKDIR /usr/src/api
 
