@@ -11,7 +11,7 @@
     "apollo-server": "^2.0.4",
     "dataloader": "^1.4.0",
     "graphql": "^0.13.2",
-    "knex": "^0.95.15",
+    "knex": "^0.19.5",
     "moment": "^2.22.2",
     "objection": "^1.1.10",
     "pg": "^7.4.2",
