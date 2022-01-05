@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { ApolloProvider } from "react-apollo";
-import { AppLoading } from "expo";
+import AppLoading from 'expo-app-loading';
 import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 import * as Amplitude from 'expo-analytics-amplitude';
