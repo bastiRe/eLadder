@@ -1,7 +1,8 @@
 import React from "react";
-import { Alert, Linking } from "react-native";
+import { Alert } from "react-native";
 import { compose, graphql } from "react-apollo";
 import * as Expo from "expo";
+import * as Linking from 'expo-linking';
 import * as Amplitude from 'expo-analytics-amplitude';
 import ADD_LEAGUE_ID from "../../graphql/AddLeagueId";
 
