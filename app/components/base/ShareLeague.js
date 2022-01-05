@@ -1,7 +1,8 @@
 import React from "react";
-import { Alert, Share, ScrollView, CameraRoll } from "react-native";
+import { Alert, Share, ScrollView} from "react-native";
 import Sentry from "sentry-expo";
 import { takeSnapshotAsync } from "expo";
+import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
 import * as Amplitude from 'expo-analytics-amplitude';
 import styled from "styled-components";
@@ -74,7 +75,7 @@ class ShareLeague extends React.Component {
         const uri = await takeSnapshotAsync(this.qrCodeRef, {
           format: "png"
         });
-        await CameraRoll.saveToCameraRoll(uri);
+        await MediaLibrary.saveToLibraryAsync(uri);
         Alert.alert("QR-Code successfully saved.");
       } catch (error) {
         Sentry.captureException(error);
