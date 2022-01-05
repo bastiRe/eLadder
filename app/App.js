@@ -6,14 +6,19 @@ import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 import * as Amplitude from 'expo-analytics-amplitude';
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
-import Sentry from "sentry-expo";
+import * as  Sentry from "sentry-expo";
 
 import { client, persistor } from "./createApolloClient";
 import RootNavigation from "./navigation/RootNavigation";
 
-const { sentryUrl, amplitudeKey } = Constants.manifest.extra;
+const { sentryDsn, amplitudeKey } = Constants.manifest.extra;
 
-Sentry.config(sentryUrl).install();
+Sentry.init({
+  dsn: sentryDsn,
+  enableInExpoDevelopment: true,
+  debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+});
+
 Amplitude.initialize(amplitudeKey);
 
 class App extends React.Component {

@@ -10,7 +10,7 @@ import gql from "graphql-tag";
 import { AsyncStorage } from "react-native";
 import { CachePersistor } from "apollo-cache-persist";
 import Environment from "./constants/Environment";
-import Sentry from "sentry-expo";
+import * as Sentry from "sentry-expo";
 
 const httpLink = createHttpLink({
   uri: Environment.apiUrl
