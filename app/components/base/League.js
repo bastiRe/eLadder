@@ -54,7 +54,7 @@ class League extends PureComponent {
         <FloatingAction
           position={Platform.OS === "ios" ? "center" : "right"}
           actions={actions}
-          buttonColor={Colors.Primary}
+          color={Colors.Primary}
           onPressItem={onPressAction}
         />
       </View>
