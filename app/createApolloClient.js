@@ -1,13 +1,13 @@
 import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import { createHttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { setContext } from "apollo-link-context";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { withClientState } from "apollo-link-state";
 import gql from "graphql-tag";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CachePersistor } from "apollo-cache-persist";
 import Environment from "./constants/Environment";
 import * as Sentry from "sentry-expo";
@@ -21,9 +21,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     graphQLErrors.map(error => {
       Sentry.captureException(error);
       console.log(
-        `[GraphQL error]: Message: ${error.message}, Location: ${
-          error.locations
-        }, Path: ${error.path}`
+        `[GraphQL error]: Message: ${error.message}, Location: ${error.locations}, Path: ${error.path}`
       );
     });
 

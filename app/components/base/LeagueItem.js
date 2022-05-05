@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableHighlight, ActivityIndicator } from "react-native";
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 import RemoveLeagueMutation from "../graphql/RemoveLeagueMutation";
 import { Row, TitleText, LightText, Item, ItemTitle } from "../elements";

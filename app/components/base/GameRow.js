@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableHighlight } from "react-native";
 import Team from "./Team";
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 import DeleteGameMutation from "../graphql/DeleteGameMutation";
 import { CenteredText, Row, HighlightedText } from "../elements";

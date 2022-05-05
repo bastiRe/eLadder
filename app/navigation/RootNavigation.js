@@ -1,5 +1,6 @@
 import React from "react";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
 import LeaguesListScreen from "../components/screens/LeaguesListScreen";
 import LeagueScreen from "../components/screens/LeagueScreen";
 import PlayerScreen from "../components/screens/PlayerScreen";

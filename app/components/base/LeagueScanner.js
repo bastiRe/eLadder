@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Alert } from "react-native";
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import styled from "styled-components";
+import styled from "styled-components/native";
 import parseUrl from "url-parse";
 
 import { CenteredText } from "../elements";

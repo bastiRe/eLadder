@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 import moment from "moment";
 import { withNavigation } from "react-navigation";

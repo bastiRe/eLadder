@@ -1,12 +1,12 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { ApolloProvider } from "react-apollo";
-import AppLoading from 'expo-app-loading';
-import Constants from 'expo-constants';
-import * as Font from 'expo-font';
-import * as Amplitude from 'expo-analytics-amplitude';
+import AppLoading from "expo-app-loading";
+import Constants from "expo-constants";
+import * as Font from "expo-font";
+import * as Amplitude from "expo-analytics-amplitude";
 import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
-import * as  Sentry from "sentry-expo";
+import * as Sentry from "sentry-expo";
 
 import { client, persistor } from "./createApolloClient";
 import RootNavigation from "./navigation/RootNavigation";
@@ -16,10 +16,10 @@ const { sentryDsn, amplitudeKey } = Constants.manifest.extra;
 Sentry.init({
   dsn: sentryDsn,
   enableInExpoDevelopment: true,
-  debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+  debug: true // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
 });
 
-Amplitude.initialize(amplitudeKey);
+Amplitude.initializeAsync(amplitudeKey);
 
 class App extends React.Component {
   state = {
@@ -45,11 +45,12 @@ class App extends React.Component {
         <AppLoading
           startAsync={this._loadCache}
           onFinish={() => this.setState({ isLoadingComplete: true })}
+          onError={console.warn}
         />
       );
     }
 
-    Amplitude.logEvent("OpenApp");
+    Amplitude.logEventAsync("OpenApp");
 
     return (
       <ApolloProvider client={client}>

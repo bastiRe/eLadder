@@ -1,12 +1,12 @@
 import React from "react";
-import { Alert, Share, ScrollView} from "react-native";
+import { Alert, Share, ScrollView } from "react-native";
 import Sentry from "sentry-expo";
 import { takeSnapshotAsync } from "expo";
-import * as MediaLibrary from 'expo-media-library';
-import * as Permissions from 'expo-permissions';
-import * as Amplitude from 'expo-analytics-amplitude';
-import styled from "styled-components";
-import QRCode from "react-native-qrcode";
+import * as MediaLibrary from "expo-media-library";
+import * as Permissions from "expo-permissions";
+import * as Amplitude from "expo-analytics-amplitude";
+import styled from "styled-components/native";
+import QRCode from "react-native-qrcode-svg";
 
 import Button from "./Button";
 import { LightText, TitleText } from "../elements";
@@ -100,7 +100,11 @@ class ShareLeague extends React.Component {
         </Row>
         <PaddedText>Scan the QR Code with another eLadder app:</PaddedText>
         <PaddedView ref={this.qrCodeRef}>
-          <QRCode value={this.state.url} size={160} bgColor={Colors.Text} />
+          <QRCode
+            value={this.state.url}
+            size={160}
+            backgroundColor={Colors.Text}
+          />
         </PaddedView>
         <PaddedButton
           title="Save QR-Code"
