@@ -1,9 +1,8 @@
 import React from "react";
 import { Alert, Share, ScrollView } from "react-native";
 import Sentry from "sentry-expo";
-import { takeSnapshotAsync } from "expo";
+import { captureRef } from "react-native-view-shot";
 import * as MediaLibrary from "expo-media-library";
-import * as Permissions from "expo-permissions";
 import * as Amplitude from "expo-analytics-amplitude";
 import styled from "styled-components/native";
 import QRCode from "react-native-qrcode-svg";
@@ -68,11 +67,11 @@ class ShareLeague extends React.Component {
     const { leagueId } = this.props;
 
     Amplitude.logEventWithProperties("TakeQrCodeScreenshot", { leagueId });
-    const permission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const { status } = await MediaLibrary.usePermissions();
 
-    if (permission.status === "granted") {
+    if (status === "granted") {
       try {
-        const uri = await takeSnapshotAsync(this.qrCodeRef, {
+        const uri = await captureRef(this.qrCodeRef, {
           format: "png"
         });
         await MediaLibrary.saveToLibraryAsync(uri);

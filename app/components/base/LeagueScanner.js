@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Alert } from "react-native";
-import * as Permissions from 'expo-permissions';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScanner } from "expo-barcode-scanner";
 import styled from "styled-components/native";
 import parseUrl from "url-parse";
 
@@ -41,7 +40,7 @@ class CreateLeagueForm extends React.Component {
   }
 
   _requestCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    const { status } = await BarCodeScanner.requestPermissionsAsync();
     this.setState({
       hasCameraPermission: status === "granted"
     });
