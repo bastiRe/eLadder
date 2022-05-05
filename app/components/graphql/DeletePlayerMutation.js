@@ -28,7 +28,7 @@ const DeletePlayerMutation = ({ player, children, leagueId }) => {
                   text: "OK",
                   onPress: async () => {
                     await deletePlayer({ variables: { id: player.id } });
-                    Amplitude.logEventWithProperties("DeleteGame", {
+                    Amplitude.logEventWithPropertiesAsync("DeleteGame", {
                       playerId: player.id,
                       leagueId
                     });

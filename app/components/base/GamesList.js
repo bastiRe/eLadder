@@ -26,7 +26,7 @@ class GamesList extends PureComponent {
   }
 
   _openGame(game) {
-    Amplitude.logEventWithProperties("OpenGame", {
+    Amplitude.logEventWithPropertiesAsync("OpenGame", {
       leagueId: this.props.leagueId,
       gameId: game.id
     });

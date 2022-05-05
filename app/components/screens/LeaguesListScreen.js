@@ -16,7 +16,7 @@ class LeaguesListScreen extends Component {
   _openLeague(leagueId, allLeagues) {
     if (this.props.navigation.isFocused()) {
       const league = allLeagues.find(league => league.id === leagueId);
-      Amplitude.logEventWithProperties("OpenLeague", { leagueId });
+      Amplitude.logEventWithPropertiesAsync("OpenLeague", { leagueId });
       this.props.navigation.navigate("League", {
         leagueId,
         leagueTitle: league.title

@@ -31,7 +31,7 @@ class LeagueScreen extends React.Component {
   };
 
   _openCreateGame(league) {
-    Amplitude.logEventWithProperties("OpenCreateGame", {
+    Amplitude.logEventWithPropertiesAsync("OpenCreateGame", {
       leagueId: league.id
     });
     this.props.navigation.navigate("CreateGame", {
@@ -42,7 +42,7 @@ class LeagueScreen extends React.Component {
   }
 
   _openAddPlayer(league) {
-    Amplitude.logEventWithProperties("OpenCreatePlayer", {
+    Amplitude.logEventWithPropertiesAsync("OpenCreatePlayer", {
       leagueId: league.id
     });
     this.props.navigation.navigate("AddPlayer", {

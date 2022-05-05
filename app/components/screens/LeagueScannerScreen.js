@@ -26,7 +26,7 @@ class LeagueScannerScreen extends React.Component {
         {(addLeagueId, { loading }) => {
           const wrappedAddLeagueId = async leagueId => {
             await addLeagueId({ leagueId });
-            Amplitude.logEventWithProperties("AddLeagueFromQRCode", {
+            Amplitude.logEventWithPropertiesAsync("AddLeagueFromQRCode", {
               leagueId
             });
             this.props.navigation.goBack();

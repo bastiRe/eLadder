@@ -7,7 +7,7 @@ import CREATE_LEAGUE from "../../graphql/CreateLeague";
 const CreateLeagueMutation = ({ children, onCompleted }) => {
   const wrappedOnCompleted = data => {
     const leagueId = data.createLeague.league.id;
-    Amplitude.logEventWithProperties("CreateLeague", { leagueId });
+    Amplitude.logEventWithPropertiesAsync("CreateLeague", { leagueId });
     return onCompleted(data);
   };
   return (

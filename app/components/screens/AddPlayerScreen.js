@@ -33,7 +33,7 @@ class AddPlayerScreen extends React.Component {
         refetchQueries={[{ query: LEAGUE, variables: { leagueId } }]}
         onCompleted={() => {
           this.props.navigation.goBack();
-          Amplitude.logEventWithProperties('CreatePlayer', { leagueId });
+          Amplitude.logEventWithPropertiesAsync('CreatePlayer', { leagueId });
         }}
       >
         {(addPlayer, { error, data, loading }) => {

@@ -16,7 +16,7 @@ class Table extends PureComponent {
 
   _openPlayer(player) {
     const { leagueId } = this.props.leagueId;
-    Amplitude.logEventWithProperties("OpenPlayer", {
+    Amplitude.logEventWithPropertiesAsync("OpenPlayer", {
       leagueId,
       playerId: player.id
     });

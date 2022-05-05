@@ -27,7 +27,7 @@ class AddLeagueFromLink extends React.Component {
           {
             text: "Yes",
             onPress: async () => {
-              Amplitude.logEventWithProperties("AddLeagueFromLink", {
+              Amplitude.logEventWithPropertiesAsync("AddLeagueFromLink", {
                 leagueId
               });
               await this.props.addLeagueIdMutation({ variables: { leagueId } });

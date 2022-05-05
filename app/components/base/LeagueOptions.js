@@ -8,7 +8,7 @@ import RemoveLeagueMutation from "../graphql/RemoveLeagueMutation";
 class LeagueOptions extends React.PureComponent {
   _shareLeague = () => {
     const { leagueId, leagueTitle } = this.props;
-    Amplitude.logEventWithProperties("OpenShareLeague", {
+    Amplitude.logEventWithPropertiesAsync("OpenShareLeague", {
       leagueId
     });
     this.props.navigation.navigate("ShareLeague", {

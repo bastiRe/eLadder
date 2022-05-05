@@ -29,7 +29,7 @@ const RemoveLeagueMutation = ({ children, leagueId }) => {
                   text: "OK",
                   onPress: async () => {
                     await removeLeagueId({ variables: { leagueId } });
-                    Amplitude.logEventWithProperties("RemoveLeague", {
+                    Amplitude.logEventWithPropertiesAsync("RemoveLeague", {
                       leagueId
                     });
                     resolve(true);
