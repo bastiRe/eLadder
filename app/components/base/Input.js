@@ -20,30 +20,18 @@ const styles = StyleSheet.create({
   }
 });
 
-class Input extends Component {
-  componentWillReceiveProps(nextProps) {
-    const { focus } = nextProps;
-    return focus && this.focus();
-  }
-
-  focus() {
-    this.input.focus();
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <TextInput
-          underlineColorAndroid="rgba(0, 0, 0, 0)"
-          style={styles.input}
-          ref={c => {
-            this.input = c;
-          }}
-          {...this.props}
-        />
-      </View>
-    );
-  }
+export function Input({ onChangeText, autoCapitalize, placeholder }) {
+  return (
+    <View style={styles.container}>
+      <TextInput
+        underlineColorAndroid="rgba(0, 0, 0, 0)"
+        style={styles.input}
+        onChangeText={onChangeText}
+        autoCapitalize={autoCapitalize}
+        placeholder={placeholder}
+      />
+    </View>
+  );
 }
 
 export default Input;

@@ -1,9 +1,8 @@
 import React from "react";
 import { Alert } from "react-native";
 import { compose, graphql } from "react-apollo";
-import * as Expo from "expo";
-import * as Linking from 'expo-linking';
-import * as Amplitude from 'expo-analytics-amplitude';
+import * as Linking from "expo-linking";
+import * as Amplitude from "expo-analytics-amplitude";
 import ADD_LEAGUE_ID from "../../graphql/AddLeagueId";
 
 class AddLeagueFromLink extends React.Component {
@@ -13,7 +12,7 @@ class AddLeagueFromLink extends React.Component {
   }
 
   _handleUrl = url => {
-    let { path, queryParams } = Expo.Linking.parse(url);
+    let { path, queryParams } = Linking.parse(url);
 
     if (path !== "add_league") return;
 

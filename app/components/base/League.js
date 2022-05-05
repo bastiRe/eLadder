@@ -1,12 +1,46 @@
 import React, { PureComponent } from "react";
 import { Platform, StyleSheet, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import ActionButton from "react-native-action-button";
+import { FloatingAction } from "react-native-floating-action";
 import LeagueTabs from "../base/LeagueTabs";
 import * as Colors from "../../constants/Colors";
 
 class League extends PureComponent {
   render() {
+    const actionNames = {
+      addPlayer: "addPlayer",
+      createGame: "createGame"
+    };
+
+    const actions = [
+      {
+        text: "Add player",
+        name: actionNames.addPlayer,
+        color: Colors.Secondary,
+        icon: require("../../assets/icons/person_add_white.png"),
+        buttonSize: 50,
+        size: 50
+      },
+      {
+        text: "Create Game",
+        name: actionNames.createGame,
+        color: Colors.Secondary,
+        icon: require("../../assets/icons/playlist_add_white.png"),
+        buttonSize: 50,
+        size: 50
+      }
+    ];
+
+    const onPressAction = name => {
+      switch (name) {
+        case actionNames.addPlayer:
+          return this.props.openAddPlayer();
+        case actionNames.createGame:
+          return this.props.openCreateGame();
+        default:
+          return null;
+      }
+    };
+
     return (
       <View style={styles.container}>
         <LeagueTabs
@@ -17,35 +51,12 @@ class League extends PureComponent {
           selectTab={this.props.selectTab}
           openPlayer={this.props.openPlayer}
         />
-        <ActionButton
+        <FloatingAction
           position={Platform.OS === "ios" ? "center" : "right"}
+          actions={actions}
           buttonColor={Colors.Primary}
-        >
-          <ActionButton.Item
-            buttonColor={Colors.Secondary}
-            onPress={() => this.props.openAddPlayer()}
-            title="Add Player"
-          >
-            <MaterialIcons
-              name="person-add"
-              size={24}
-              color={Colors.TextOnPrimary}
-              style={styles.actionButton}
-            />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor={Colors.Secondary}
-            onPress={() => this.props.openCreateGame()}
-            title="Create Game"
-          >
-            <MaterialIcons
-              name="playlist-add"
-              size={24}
-              color={Colors.TextOnPrimary}
-              style={styles.actionButton}
-            />
-          </ActionButton.Item>
-        </ActionButton>
+          onPressItem={onPressAction}
+        />
       </View>
     );
   }

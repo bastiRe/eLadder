@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import { FlatList, Platform } from "react-native";
-import ActionButton from "react-native-action-button";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FloatingAction } from "react-native-floating-action";
 
 import LeagueItem from "../base/LeagueItem";
 import * as Colors from "../../constants/Colors";
@@ -10,6 +9,41 @@ import { Background } from "../elements";
 
 class LeaguesList extends PureComponent {
   render() {
+    const actionNames = {
+      qrCode: "qrCode",
+      newLeague: "newLeague"
+    };
+
+    const actions = [
+      {
+        text: "Add with QR-Code",
+        name: actionNames.qrCode,
+        color: Colors.Secondary,
+        icon: require("../../assets/icons/qr_code_scanner_white.png"),
+        buttonSize: 50,
+        size: 50
+      },
+      {
+        text: "Create new league",
+        name: actionNames.newLeague,
+        color: Colors.Secondary,
+        icon: require("../../assets/icons/playlist_add_white.png"),
+        buttonSize: 50,
+        size: 50
+      }
+    ];
+
+    const onPressAction = name => {
+      switch (name) {
+        case actionNames.qrCode:
+          return this.props.openLeagueScanner();
+        case actionNames.newLeague:
+          return this.props.openCreateLeague();
+        default:
+          return null;
+      }
+    };
+
     return (
       <Background>
         <FlatList
@@ -32,35 +66,12 @@ class LeaguesList extends PureComponent {
           )}
           keyExtractor={(data, index) => index.toString()}
         />
-        <ActionButton
+        <FloatingAction
           position={Platform.OS === "ios" ? "center" : "right"}
-          buttonColor={Colors.Primary}
-        >
-          <ActionButton.Item
-            buttonColor={Colors.Secondary}
-            onPress={this.props.openLeagueScanner}
-            title="Add with QR-Code"
-          >
-            <MaterialCommunityIcons
-              name="qrcode-scan"
-              size={24}
-              color={Colors.TextOnPrimary}
-              style={{ marginTop: 2 }}
-            />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor={Colors.Secondary}
-            onPress={this.props.openCreateLeague}
-            title="Create new league"
-          >
-            <MaterialIcons
-              name="playlist-add"
-              size={24}
-              color={Colors.TextOnPrimary}
-              style={{ marginTop: 2 }}
-            />
-          </ActionButton.Item>
-        </ActionButton>
+          actions={actions}
+          color={Colors.Primary}
+          onPressItem={onPressAction}
+        />
       </Background>
     );
   }
