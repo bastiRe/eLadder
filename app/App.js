@@ -42,7 +42,6 @@ function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      console.log("hide");
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);

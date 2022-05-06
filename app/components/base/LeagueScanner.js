@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import styled from "styled-components/native";
@@ -29,30 +29,29 @@ const Overlay = styled.View`
   border: 3px solid white;
 `;
 
-class CreateLeagueForm extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    alertOpen: false
-  };
+function LeagueScanner({ addLeagueId }) {
+  const [hasCameraPermission, setHasCameraPermission] = useState(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
-  componentDidMount() {
-    this._requestCameraPermission();
-  }
+  useEffect(() => {
+    const requestCameraPermission = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      if (status === "granted") {
+        setHasCameraPermission(true);
+      } else {
+        setHasCameraPermission(false);
+      }
+    };
+    requestCameraPermission();
+  }, []);
 
-  _requestCameraPermission = async () => {
-    const { status } = await BarCodeScanner.requestPermissionsAsync();
-    this.setState({
-      hasCameraPermission: status === "granted"
-    });
-  };
-
-  _handleBarCodeRead = ({ data }) => {
+  const handleBarCodeRead = ({ data }) => {
     const { hostname, query } = parseUrl(data, true);
     const { leagueId, leagueTitle } = query;
     const validUrl = hostname === "eladder-app.com" && leagueTitle && leagueId;
 
-    if (validUrl && this.state.alertOpen === false) {
-      this.setState({ alertOpen: true });
+    if (validUrl && isAlertOpen === false) {
+      setIsAlertOpen(true);
       Alert.alert(
         `Add league?`,
         `Do you want to add the league ${leagueTitle}?`,
@@ -60,12 +59,12 @@ class CreateLeagueForm extends React.Component {
           {
             text: "Cancel",
             style: "cancel",
-            onPress: () => this.setState({ alertOpen: false })
+            onPress: () => setIsAlertOpen(false)
           },
           {
             text: "OK",
             onPress: () => {
-              this.props.addLeagueId(leagueId);
+              addLeagueId(leagueId);
             }
           }
         ]
@@ -73,37 +72,35 @@ class CreateLeagueForm extends React.Component {
     }
   };
 
-  render() {
-    let content;
-    if (this.state.hasCameraPermission === null) {
-      content = (
-        <CenteredText>
-          Requesting camera permission to scan a league code.
-        </CenteredText>
-      );
-    } else if (this.state.hasCameraPermission === false) {
-      content = (
-        <CenteredText>
-          eLadder needs camera permission to scan a league code.
-        </CenteredText>
-      );
-    } else {
-      content = (
-        <React.Fragment>
-          <BarCodeScanner
-            style={StyleSheet.absoluteFillObject}
-            onBarCodeScanned={this._handleBarCodeRead}
-            barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-          />
-          <OverlayContainer>
-            <Overlay />
-          </OverlayContainer>
-        </React.Fragment>
-      );
-    }
-
-    return <Container>{content}</Container>;
+  let content;
+  if (hasCameraPermission === null) {
+    content = (
+      <CenteredText>
+        Requesting camera permission to scan a league code.
+      </CenteredText>
+    );
+  } else if (hasCameraPermission === false) {
+    content = (
+      <CenteredText>
+        eLadder needs camera permission to scan a league code.
+      </CenteredText>
+    );
+  } else {
+    content = (
+      <>
+        <BarCodeScanner
+          style={StyleSheet.absoluteFillObject}
+          onBarCodeScanned={handleBarCodeRead}
+          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+        />
+        <OverlayContainer>
+          <Overlay />
+        </OverlayContainer>
+      </>
+    );
   }
+
+  return <Container>{content}</Container>;
 }
 
-export default CreateLeagueForm;
+export default LeagueScanner;
