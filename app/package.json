@@ -60,7 +60,7 @@
     "sentry-expo": "^4.0.0",
     "styled-components": "5.3.5",
     "url-parse": "^1.4.3",
-    "victory-native": "^30.4.0"
+    "victory-native": "^36.3.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.0",
