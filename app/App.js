@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ApolloProvider } from "react-apollo";
-import { StatusBar, Platform } from "react-native";
-import AppLoading from "expo-app-loading";
+import { StatusBar, Platform, View } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
 import Constants from "expo-constants";
-import * as Font from "expo-font";
 import * as Amplitude from "expo-analytics-amplitude";
-import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import * as Sentry from "sentry-expo";
 
 import { client, persistor } from "./createApolloClient";
@@ -21,44 +19,46 @@ Sentry.init({
 
 Amplitude.initializeAsync(amplitudeKey);
 
-class App extends React.Component {
-  state = {
-    isLoadingComplete: false
-  };
+function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  async _prepareApp() {
-    await Promise.all([this._loadCache(), ...this._loadFonts()]);
-  }
-
-  _loadFonts() {
-    const fonts = [Ionicons.font, Feather.font, MaterialIcons.font];
-    return fonts.map(font => Font.loadAsync(font));
-  }
-
-  async _loadCache() {
-    await persistor.restore();
-  }
-
-  render() {
-    if (!this.state.isLoadingComplete) {
-      return (
-        <AppLoading
-          startAsync={this._loadCache}
-          onFinish={() => this.setState({ isLoadingComplete: true })}
-          onError={console.warn}
-        />
-      );
+  useEffect(() => {
+    Amplitude.logEventAsync("OpenApp");
+    async function prepare() {
+      try {
+        // Keep the splash screen visible while we fetch resources
+        await SplashScreen.preventAutoHideAsync();
+        await persistor.restore();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
     }
 
-    Amplitude.logEventAsync("OpenApp");
+    prepare();
+  }, []);
 
-    return (
-      <ApolloProvider client={client}>
-        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
-        <AppNavigator />
-      </ApolloProvider>
-    );
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      console.log("hide");
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
+
+  return (
+    <ApolloProvider client={client} onLayout={onLayoutRootView}>
+      {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
+      <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+        <AppNavigator />
+      </View>
+    </ApolloProvider>
+  );
 }
 
 export default App;
