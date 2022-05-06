@@ -77,7 +77,8 @@ export default CreateGameForm;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    paddingTop: 10
   },
   scoreContainer: {
     marginTop: 10,

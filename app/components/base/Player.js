@@ -1,7 +1,6 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import { withNavigation } from "react-navigation";
 
 import { ErrorText, ScrollBackground } from "../elements";
 import DeletePlayerMutation from "../graphql/DeletePlayerMutation";
@@ -38,4 +37,4 @@ const Player = ({ player, leagueId, navigation }) => {
   );
 };
 
-export default withNavigation(Player);
+export default Player;

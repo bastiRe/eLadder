@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { FlatList, Platform } from "react-native";
+import { FlatList } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 
 import LeagueItem from "../base/LeagueItem";
@@ -67,7 +67,6 @@ class LeaguesList extends PureComponent {
           keyExtractor={(data, index) => index.toString()}
         />
         <FloatingAction
-          position={Platform.OS === "ios" ? "center" : "right"}
           actions={actions}
           color={Colors.Primary}
           onPressItem={onPressAction}

@@ -19,14 +19,14 @@ const httpLink = createHttpLink({
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.map(error => {
-      Sentry.captureException(error);
+      Sentry.Browser.captureException(error);
       console.log(
         `[GraphQL error]: Message: ${error.message}, Location: ${error.locations}, Path: ${error.path}`
       );
     });
 
   if (networkError) {
-    Sentry.captureException(networkError);
+    Sentry.Browser.captureException(networkError);
     console.log(`[Network error]: ${networkError}`);
   }
 });

@@ -47,12 +47,11 @@ class League extends PureComponent {
           refetch={this.props.refetch}
           refreshing={this.props.refreshing}
           league={this.props.league}
+          navigation={this.props.navigation}
           selectedTab={this.props.selectedTab}
           selectTab={this.props.selectTab}
-          openPlayer={this.props.openPlayer}
         />
         <FloatingAction
-          position={Platform.OS === "ios" ? "center" : "right"}
           actions={actions}
           color={Colors.Primary}
           onPressItem={onPressAction}

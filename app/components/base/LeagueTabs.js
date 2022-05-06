@@ -1,82 +1,66 @@
-import React, { PureComponent } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { TabViewAnimated, TabBar } from "react-native-tab-view";
+import React from "react";
+import { useWindowDimensions } from "react-native";
+import { TabBar, TabView, SceneMap } from "react-native-tab-view";
 import GamesList from "./GamesList";
 import Table from "./Table";
 import * as Colors from "../../constants/Colors";
 
-const initialLayout = {
-  height: 0,
-  width: Dimensions.get("window").width
-};
+function LeagueTabs({ league, refetch, refreshing, navigation }) {
+  const layout = useWindowDimensions();
 
-export default class LeagueTabs extends PureComponent {
-  _handleIndexChange = index => {
-    const selectedTab = index === 0 ? "Table" : "Games";
-    this.props.selectTab(selectedTab);
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: "gamesList", title: "Games" },
+    { key: "table", title: "Table" }
+  ]);
+
+  const renderGamesList = () => {
+    return (
+      <GamesList
+        games={league.games}
+        leagueId={league.id}
+        refetch={refetch}
+        refreshing={refreshing}
+        navigation={navigation}
+      />
+    );
   };
 
-  _renderHeader = props => (
+  const renderTable = () => {
+    return (
+      <Table
+        players={league.players}
+        leagueId={league.id}
+        refetch={refetch}
+        refreshing={refreshing}
+        navigation={navigation}
+      />
+    );
+  };
+
+  const renderScene = SceneMap({
+    gamesList: renderGamesList,
+    table: renderTable
+  });
+
+  const renderTabBar = props => (
     <TabBar
-      style={styles.tabBar}
-      indicatorStyle={styles.indicator}
       {...props}
+      indicatorStyle={{ backgroundColor: Colors.Primary }}
+      style={{ backgroundColor: Colors.TextOnPrimary }}
+      labelStyle={{ color: Colors.Primary }}
     />
   );
 
-  _renderScene = ({ route }) => {
-    switch (route.key) {
-      case "games":
-        return (
-          <GamesList
-            games={this.props.league.games}
-            leagueId={this.props.league.id}
-            refetch={this.props.refetch}
-            refreshing={this.props.refreshing}
-          />
-        );
-      case "table":
-        return (
-          <Table
-            players={this.props.league.players}
-            openPlayer={this.props.openPlayer}
-            leagueId={this.props.league.id}
-            refetch={this.props.refetch}
-            refreshing={this.props.refreshing}
-          />
-        );
-    }
-  };
-
-  render() {
-    const tabState = {
-      routes: [
-        { key: "table", title: "Table" },
-        { key: "games", title: "Games" }
-      ],
-      index: this.props.selectedTab === "Table" ? 0 : 1
-    };
-    return (
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={tabState}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onIndexChange={this._handleIndexChange}
-        initialLayout={initialLayout}
-      />
-    );
-  }
+  return (
+    <TabView
+      renderTabBar={renderTabBar}
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+    />
+  );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  tabBar: {
-    backgroundColor: Colors.Primary
-  },
-  indicator: {
-    backgroundColor: Colors.Secondary
-  }
-});
+export default LeagueTabs;

@@ -1,6 +1,6 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { ApolloProvider } from "react-apollo";
+import { StatusBar, Platform } from "react-native";
 import AppLoading from "expo-app-loading";
 import Constants from "expo-constants";
 import * as Font from "expo-font";
@@ -9,7 +9,7 @@ import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import * as Sentry from "sentry-expo";
 
 import { client, persistor } from "./createApolloClient";
-import RootNavigation from "./navigation/RootNavigation";
+import { AppNavigator } from "./navigation/AppNavigator";
 
 const { sentryDsn, amplitudeKey } = Constants.manifest.extra;
 
@@ -54,20 +54,11 @@ class App extends React.Component {
 
     return (
       <ApolloProvider client={client}>
-        <View style={styles.container}>
-          {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
-          <RootNavigation />
-        </View>
+        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
+        <AppNavigator />
       </ApolloProvider>
     );
   }
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff"
-  }
-});

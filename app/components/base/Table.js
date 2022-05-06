@@ -1,70 +1,10 @@
 import React, { PureComponent } from "react";
 import { StyleSheet, FlatList, View, Text } from "react-native";
-import * as Amplitude from 'expo-analytics-amplitude';
-import { withNavigation } from "react-navigation";
-
+import * as Amplitude from "expo-analytics-amplitude";
 import PlayerRow from "../base/PlayerRow";
 import * as Colors from "../../constants/Colors";
 import EmptyList from "../base/EmptyList";
 import { Background } from "../elements";
-
-class Table extends PureComponent {
-  _sortedPlayers() {
-    const players = this.props.players.filter(p => !p.toDelete);
-    return players.sort((playerA, playerB) => playerB.points - playerA.points);
-  }
-
-  _openPlayer(player) {
-    const { leagueId } = this.props.leagueId;
-    Amplitude.logEventWithPropertiesAsync("OpenPlayer", {
-      leagueId,
-      playerId: player.id
-    });
-    this.props.navigation.navigate("Player", {
-      player,
-      leagueId
-    });
-  }
-
-  render() {
-    return (
-      <Background>
-        <FlatList
-          contentInset={{ bottom: 80 }}
-          data={this._sortedPlayers()}
-          onRefresh={this.props.refetch}
-          refreshing={this.props.refreshing}
-          ListEmptyComponent={() => (
-            <EmptyList
-              title="No players"
-              text={`Tap the + icon below to add a new player or game.`}
-            />
-          )}
-          ListHeaderComponent={() => {
-            if (this.props.players.length === 0) return null;
-            return (
-              <View style={styles.headerContainer}>
-                <Text style={styles.rank}># </Text>
-                <Text style={styles.wld}>W/D/L</Text>
-                <Text style={styles.points}>Points</Text>
-              </View>
-            );
-          }}
-          renderItem={data => (
-            <PlayerRow
-              player={data.item}
-              rank={data.index + 1}
-              key={data.index}
-              leagueId={this.props.leagueId}
-              openPlayer={this._openPlayer.bind(this)}
-            />
-          )}
-          keyExtractor={(data, index) => index.toString()}
-        />
-      </Background>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -96,4 +36,59 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withNavigation(Table);
+function Table({ players, navigation, leagueId, refetch, refreshing }) {
+  const activePlayers = players.filter(p => !p.toDelete);
+  const sortedPlayers = activePlayers.sort(
+    (playerA, playerB) => playerB.points - playerA.points
+  );
+
+  const openPlayer = player => {
+    Amplitude.logEventWithPropertiesAsync("OpenPlayer", {
+      leagueId,
+      playerId: player.id
+    });
+    navigation.navigate("player", {
+      player,
+      leagueId
+    });
+  };
+
+  return (
+    <Background>
+      <FlatList
+        contentInset={{ bottom: 80 }}
+        data={sortedPlayers}
+        onRefresh={refetch}
+        refreshing={refreshing}
+        ListEmptyComponent={() => (
+          <EmptyList
+            title="No players"
+            text={`Tap the + icon below to add a new player or game.`}
+          />
+        )}
+        ListHeaderComponent={() => {
+          if (players.length === 0) return null;
+          return (
+            <View style={styles.headerContainer}>
+              <Text style={styles.rank}># </Text>
+              <Text style={styles.wld}>W/D/L</Text>
+              <Text style={styles.points}>Points</Text>
+            </View>
+          );
+        }}
+        renderItem={data => (
+          <PlayerRow
+            player={data.item}
+            rank={data.index + 1}
+            key={data.index}
+            leagueId={leagueId}
+            openPlayer={openPlayer}
+          />
+        )}
+        keyExtractor={(_, index) => index.toString()}
+      />
+    </Background>
+  );
+}
+
+export default Table;

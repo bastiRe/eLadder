@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import { Query } from "react-apollo";
 import { ActivityIndicator } from "react-native";
-import * as Amplitude from 'expo-analytics-amplitude';
+import * as Amplitude from "expo-analytics-amplitude";
 
 import LeaguesList from "../base/LeaguesList";
 import LeaguesQuery from "../graphql/LeaguesQuery";
@@ -9,15 +9,11 @@ import AddLeagueFromLink from "../base/AddLeagueFromLink.js";
 import LEAGUE_IDS from "../../graphql/LeagueIds";
 
 class LeaguesListScreen extends Component {
-  static navigationOptions = {
-    title: "Leagues"
-  };
-
   _openLeague(leagueId, allLeagues) {
     if (this.props.navigation.isFocused()) {
       const league = allLeagues.find(league => league.id === leagueId);
       Amplitude.logEventWithPropertiesAsync("OpenLeague", { leagueId });
-      this.props.navigation.navigate("League", {
+      this.props.navigation.navigate("league", {
         leagueId,
         leagueTitle: league.title
       });
@@ -25,15 +21,15 @@ class LeaguesListScreen extends Component {
   }
 
   _openLeagueScanner() {
-    this.props.navigation.navigate("LeagueScanner");
+    this.props.navigation.navigate("leagueScanner");
   }
 
   _openCreateLeague() {
-    this.props.navigation.navigate("CreateLeague");
+    this.props.navigation.navigate("createLeague");
   }
 
   _openLeaguesList() {
-    this.props.navigation.navigate("LeaguesList");
+    this.props.navigation.navigate("ceaguesList");
   }
 
   render() {

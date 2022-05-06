@@ -59,7 +59,9 @@ class ShareLeague extends React.Component {
       title: "Sharing eLadder league"
     }).then(() => {
       // No way on Android to discover if the share was successful
-      Amplitude.logEventWithPropertiesAsync("AttemptedToShareLeague", { leagueId });
+      Amplitude.logEventWithPropertiesAsync("AttemptedToShareLeague", {
+        leagueId
+      });
     });
   }
 
@@ -67,7 +69,10 @@ class ShareLeague extends React.Component {
     const { leagueId } = this.props;
 
     Amplitude.logEventWithPropertiesAsync("TakeQrCodeScreenshot", { leagueId });
-    const { status } = await MediaLibrary.usePermissions();
+    const [status, requestPermission] = MediaLibrary.usePermissions();
+    if (!status === "granted") {
+      await requestPermission();
+    }
 
     if (status === "granted") {
       try {
