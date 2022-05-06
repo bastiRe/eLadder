@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Alert, Share, ScrollView } from "react-native";
 import Sentry from "sentry-expo";
 import { captureRef } from "react-native-view-shot";
@@ -43,19 +43,13 @@ const PaddedView = styled.View`
   padding: 20px;
 `;
 
-class ShareLeague extends React.Component {
-  constructor(props) {
-    super(props);
-    const { leagueId, leagueTitle } = props;
-    this.qrCodeRef = React.createRef();
-    this.state = {
-      url: `https://eladder-app.com/add_league?leagueId=${leagueId}&leagueTitle=${leagueTitle}`
-    };
-  }
-  _openShareDialog() {
-    const { leagueId } = this.props;
+function ShareLeague({ leagueId, leagueTitle }) {
+  const url = `https://eladder-app.com/add_league?leagueId=${leagueId}&leagueTitle=${leagueTitle}`;
+  const qrCodeRef = useRef(null);
+
+  const openShareDialog = () => {
     Share.share({
-      message: this.state.url,
+      message: url,
       title: "Sharing eLadder league"
     }).then(() => {
       // No way on Android to discover if the share was successful
@@ -63,11 +57,9 @@ class ShareLeague extends React.Component {
         leagueId
       });
     });
-  }
+  };
 
-  async _takeScreenshot() {
-    const { leagueId } = this.props;
-
+  const takeScreenshot = async () => {
     Amplitude.logEventWithPropertiesAsync("TakeQrCodeScreenshot", { leagueId });
     const [status, requestPermission] = MediaLibrary.usePermissions();
     if (!status === "granted") {
@@ -76,7 +68,7 @@ class ShareLeague extends React.Component {
 
     if (status === "granted") {
       try {
-        const uri = await captureRef(this.qrCodeRef, {
+        const uri = await captureRef(qrCodeRef, {
           format: "png"
         });
         await MediaLibrary.saveToLibraryAsync(uri);
@@ -85,39 +77,32 @@ class ShareLeague extends React.Component {
         Sentry.captureException(error);
       }
     }
-  }
+  };
 
-  render() {
-    const { leagueTitle } = this.props;
-    return (
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <PaddedText>You can share {leagueTitle} League in two ways:</PaddedText>
-        <PaddedButton
-          title="Share link"
-          type="primary"
-          onPress={this._openShareDialog.bind(this)}
-        />
-        <Row>
-          <Divider />
-          <DividerText>or</DividerText>
-          <Divider />
-        </Row>
-        <PaddedText>Scan the QR Code with another eLadder app:</PaddedText>
-        <PaddedView ref={this.qrCodeRef}>
-          <QRCode
-            value={this.state.url}
-            size={160}
-            backgroundColor={Colors.Text}
-          />
-        </PaddedView>
-        <PaddedButton
-          title="Save QR-Code"
-          type="primary"
-          onPress={this._takeScreenshot.bind(this)}
-        />
-      </ScrollView>
-    );
-  }
+  return (
+    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+      <PaddedText>You can share {leagueTitle} League in two ways:</PaddedText>
+      <PaddedButton
+        title="Share link"
+        type="primary"
+        onPress={openShareDialog}
+      />
+      <Row>
+        <Divider />
+        <DividerText>or</DividerText>
+        <Divider />
+      </Row>
+      <PaddedText>Scan the QR Code with another eLadder app:</PaddedText>
+      <PaddedView ref={qrCodeRef}>
+        <QRCode value={url} size={160} />
+      </PaddedView>
+      <PaddedButton
+        title="Save QR-Code"
+        type="primary"
+        onPress={takeScreenshot}
+      />
+    </ScrollView>
+  );
 }
 
 export default ShareLeague;

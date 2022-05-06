@@ -25,40 +25,38 @@ const styles = StyleSheet.create({
   }
 });
 
-class HeaderDropdown extends React.PureComponent {
-  _onSelect(index) {
-    setTimeout(this.props.options[index].onSelect, 100);
-  }
+function HeaderDropdown({ options }) {
+  const onSelect = index => {
+    setTimeout(options[index].onSelect, 100);
+  };
 
-  render() {
-    const optionLabels = this.props.options.map(option => option.label);
-    return (
-      <ModalDropdown
-        options={optionLabels}
-        onSelect={this._onSelect.bind(this)}
-        dropdownStyle={styles.dropdown}
-        dropdownTextStyle={styles.dropdownText}
-        animated={false}
-        adjustFrame={frame => {
-          const adjustedFrame = Object.assign({}, frame);
-          if (Platform.OS === "ios") {
-            adjustedFrame.right = frame.right + 4;
-          } else {
-            adjustedFrame.right = frame.right + 12;
-            adjustedFrame.top = frame.top - 24;
-          }
-          return adjustedFrame;
-        }}
-      >
-        <SimpleLineIcons
-          name={Platform.OS === "ios" ? "options" : "options-vertical"}
-          color={Colors.TextOnPrimary}
-          size={20}
-          style={styles.icon}
-        />
-      </ModalDropdown>
-    );
-  }
+  const optionLabels = options.map(option => option.label);
+  return (
+    <ModalDropdown
+      options={optionLabels}
+      onSelect={onSelect}
+      dropdownStyle={styles.dropdown}
+      dropdownTextStyle={styles.dropdownText}
+      animated={false}
+      adjustFrame={frame => {
+        const adjustedFrame = Object.assign({}, frame);
+        if (Platform.OS === "ios") {
+          adjustedFrame.right = frame.right + 4;
+        } else {
+          adjustedFrame.right = frame.right + 12;
+          adjustedFrame.top = frame.top - 24;
+        }
+        return adjustedFrame;
+      }}
+    >
+      <SimpleLineIcons
+        name={Platform.OS === "ios" ? "options" : "options-vertical"}
+        color={Colors.TextOnPrimary}
+        size={20}
+        style={styles.icon}
+      />
+    </ModalDropdown>
+  );
 }
 
 export default HeaderDropdown;
