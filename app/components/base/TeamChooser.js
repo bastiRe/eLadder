@@ -1,92 +1,20 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import Colors from '../../constants/Colors';
-import ModalSelector from 'react-native-modal-selector';
-
-class TeamChooser extends React.PureComponent {
-  _onSubmit() {
-    this.props.onSubmit(this.state);
-  }
-
-  _availablePlayersData(index) {
-    return this.props.players
-      .filter(p => {
-        const notOtherTeam = this.props.otherTeam.indexOf(p) === -1;
-        const sameTeamIndex = this.props.team.indexOf(p);
-        const notSameTeam = sameTeamIndex === -1 || sameTeamIndex === index;
-        return notOtherTeam && notSameTeam;
-      })
-      .map(p => {
-        return { key: p.id, label: p.name };
-      });
-  }
-
-  _updateTeam(playerId, index) {
-    const newTeam = this.props.team.slice();
-    if (playerId) {
-      const player = this.props.players.find(p => p.id === playerId);
-      newTeam[index] = player;
-    } else {
-      newTeam.splice(index, 1);
-    }
-    this.props.onChange(newTeam);
-  }
-
-  _renderButton(index) {
-    const player = this.props.team[index];
-    const playersData = this._availablePlayersData(index);
-    let playerView;
-    if (player) {
-      playerView = <Text style={styles.playerText}>{player.name}</Text>;
-      playersData.push({ label: 'Remove Player', key: null });
-    } else {
-      playerView = (
-        <View style={styles.playerButton}>
-          <Text style={styles.playerButtonText}>Add Player</Text>
-        </View>
-      );
-    }
-
-    return (
-      <ModalSelector
-        key={index}
-        data={playersData}
-        animationType="fade"
-        onChange={({ key }) => this._updateTeam(key, index)}
-        optionTextStyle={styles.playerOption}
-      >
-        {playerView}
-      </ModalSelector>
-    );
-  }
-
-  _renderPlayers() {
-    const playerButton = this.props.team.map((_, i) => this._renderButton(i));
-    if (this.props.team.length < 2) {
-      playerButton.push(this._renderButton(this.props.team.length));
-    }
-    return playerButton;
-  }
-
-  render() {
-    return <View style={styles.container}>{this._renderPlayers()}</View>;
-  }
-}
-
-export default TeamChooser;
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
+import Colors from "../../constants/Colors";
+import ModalSelector from "react-native-modal-selector";
 
 const styles = StyleSheet.create({
   container: {
     padding: 8,
     flex: 1,
     height: 80,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center"
   },
   playerText: {
     fontSize: 16,
     height: 24,
-    textAlign: 'center',
+    textAlign: "center",
     color: Colors.Primary
   },
   playerOption: {
@@ -102,7 +30,70 @@ const styles = StyleSheet.create({
   playerButtonText: {
     lineHeight: 32,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     color: Colors.Primary
   }
 });
+
+function TeamChooser({ players, otherTeam, team, onChange }) {
+  const computeAvailablePlayers = index => {
+    return players.filter(p => {
+      const onOtherTeam = otherTeam.includes(p);
+      const onSameTeam = team.includes(p);
+      const currentPlayer = index === team.indexOf(p);
+      return !onOtherTeam && (!onSameTeam || currentPlayer);
+    });
+  };
+
+  const updateTeam = (player, buttonIndex) => {
+    const newTeam = team.slice();
+    if (player.id) {
+      newTeam[buttonIndex] = player;
+    } else {
+      newTeam.splice(buttonIndex, 1);
+    }
+    onChange(newTeam);
+  };
+
+  const renderButton = buttonIndex => {
+    const player = team[buttonIndex];
+    const playersData = computeAvailablePlayers(buttonIndex);
+    let playerView;
+    if (player) {
+      playerView = <Text style={styles.playerText}>{player.name}</Text>;
+      playersData.push({ name: "Remove Player", id: null });
+    } else {
+      playerView = (
+        <View style={styles.playerButton}>
+          <Text style={styles.playerButtonText}>Add Player</Text>
+        </View>
+      );
+    }
+
+    return (
+      <ModalSelector
+        key={buttonIndex}
+        data={playersData}
+        keyExtractor={({ id }) => id || "remove"}
+        labelExtractor={({ name }) => name}
+        animationType="fade"
+        onChange={player => updateTeam(player, buttonIndex)}
+        optionTextStyle={styles.playerOption}
+      >
+        {playerView}
+      </ModalSelector>
+    );
+  };
+
+  const renderPlayers = () => {
+    const playerButtons = team.map((_, i) => renderButton(i));
+    if (team.length < 2) {
+      playerButtons.push(renderButton(team.length));
+    }
+    return playerButtons;
+  };
+
+  return <View style={styles.container}>{renderPlayers()}</View>;
+}
+
+export default TeamChooser;
