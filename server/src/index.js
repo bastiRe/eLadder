@@ -27,6 +27,7 @@ const engine = process.env.APOLLO_ENGINE_KEY
 const graphQLServer = new ApolloServer({
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
+  introspection: true,
   formatError,
   engine
 });
