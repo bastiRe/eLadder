@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ApolloProvider } from "react-apollo";
+import { LeagueIdsProvider } from "./context/LeagueIds";
 import { StatusBar, Platform, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import Constants from "expo-constants";
 import * as Amplitude from "expo-analytics-amplitude";
 import * as Sentry from "sentry-expo";
 
-import { client, persistor } from "./createApolloClient";
+import { client } from "./createApolloClient";
 import { AppNavigator } from "./navigation/AppNavigator";
 
 const { sentryDsn, amplitudeKey } = Constants.manifest.extra;
@@ -28,7 +29,6 @@ function App() {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync();
-        await persistor.restore();
       } catch (e) {
         console.warn(e);
       } finally {
@@ -51,12 +51,14 @@ function App() {
   }
 
   return (
-    <ApolloProvider client={client} onLayout={onLayoutRootView}>
-      {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
-      <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-        <AppNavigator />
-      </View>
-    </ApolloProvider>
+    <LeagueIdsProvider>
+      <ApolloProvider client={client} onLayout={onLayoutRootView}>
+        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
+        <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+          <AppNavigator />
+        </View>
+      </ApolloProvider>
+    </LeagueIdsProvider>
   );
 }
 

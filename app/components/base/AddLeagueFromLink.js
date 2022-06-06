@@ -1,20 +1,16 @@
 import React, { useEffect } from "react";
 import { Alert } from "react-native";
-import { compose, graphql } from "react-apollo";
+import { useLeagueIds } from "../../context/LeagueIds";
 import * as Linking from "expo-linking";
 import * as Amplitude from "expo-analytics-amplitude";
-import ADD_LEAGUE_ID from "../../graphql/AddLeagueId";
 
-function AddLeagueFromLink({
-  leagueIds,
-  openLeague,
-  addLeagueIdMutation,
-  openLeaguesList
-}) {
+function AddLeagueFromLink({ leagueIds, openLeague, openLeaguesList }) {
   useEffect(() => {
     Linking.getInitialURL().then(url => handleUrl(url));
     Linking.addEventListener("url", ({ url }) => handleUrl(url));
   });
+
+  const { addLeagueId } = useLeagueIds();
 
   const handleUrl = url => {
     let { path, queryParams } = Linking.parse(url);
@@ -35,7 +31,7 @@ function AddLeagueFromLink({
               Amplitude.logEventWithPropertiesAsync("AddLeagueFromLink", {
                 leagueId
               });
-              await addLeagueIdMutation({ variables: { leagueId } });
+              addLeagueId(leagueId);
               openLeaguesList();
             }
           },
@@ -48,6 +44,4 @@ function AddLeagueFromLink({
   return null;
 }
 
-export default compose(graphql(ADD_LEAGUE_ID, { name: "addLeagueIdMutation" }))(
-  AddLeagueFromLink
-);
+export default AddLeagueFromLink;

@@ -5,10 +5,6 @@ import { createHttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { setContext } from "apollo-link-context";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { withClientState } from "apollo-link-state";
-import gql from "graphql-tag";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { CachePersistor } from "apollo-cache-persist";
 import { endpointUrl } from "./constants/Environment";
 import * as Sentry from "sentry-expo";
 
@@ -42,55 +38,7 @@ const authLink = setContext(async () => {
 
 const cache = new InMemoryCache();
 
-const stateLink = withClientState({
-  cache,
-  resolvers: {
-    Mutation: {
-      addLeagueId: (_, { leagueId }, { cache }) => {
-        if (leagueId) {
-          const query = gql`
-            query GetLeagueIds {
-              leagueIds @client
-            }
-          `;
-          const previous = cache.readQuery({ query });
-
-          const data = {
-            leagueIds: previous.leagueIds.concat([leagueId])
-          };
-          cache.writeData({ data });
-        }
-        return null;
-      },
-      removeLeagueId: (_, { leagueId }, { cache }) => {
-        const query = gql`
-          query GetLeagueIds {
-            leagueIds @client
-          }
-        `;
-        const previous = cache.readQuery({ query });
-
-        const data = {
-          leagueIds: previous.leagueIds.filter(id => id !== leagueId)
-        };
-        cache.writeData({ data });
-        return null;
-      }
-    }
-  },
-  defaults: {
-    leagueIds: []
-  }
-});
-
 export const client = new ApolloClient({
-  link: ApolloLink.from([errorLink, authLink, stateLink, httpLink]),
+  link: ApolloLink.from([errorLink, authLink, httpLink]),
   cache
-});
-
-// needs to be declared after client otherwise there might be problems with defaults
-export const persistor = new CachePersistor({
-  storage: AsyncStorage,
-  cache,
-  debug: true
 });

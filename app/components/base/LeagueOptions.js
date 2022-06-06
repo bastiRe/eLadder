@@ -2,10 +2,12 @@ import React from "react";
 import * as Amplitude from "expo-analytics-amplitude";
 
 import HeaderDropdown from "../base/HeaderDropdown";
-import RemoveLeagueMutation from "../graphql/RemoveLeagueMutation";
+import { useLeagueIds } from "../../context/LeagueIds";
 
 function LeagueOptions({ navigation, route }) {
   const { leagueId, leagueTitle } = route.params;
+
+  const { removeLeagueId } = useLeagueIds();
 
   const shareLeague = () => {
     Amplitude.logEventWithPropertiesAsync("OpenShareLeague", {
@@ -18,27 +20,24 @@ function LeagueOptions({ navigation, route }) {
   };
 
   return (
-    <RemoveLeagueMutation leagueId={leagueId}>
-      {({ removeLeagueHandler }) => (
-        <HeaderDropdown
-          options={[
-            {
-              label: "Share League",
-              onSelect: shareLeague
-            },
-            {
-              label: "Delete League",
-              onSelect: async () => {
-                const removed = await removeLeagueHandler();
-                if (removed) {
-                  navigation.goBack();
-                }
-              }
+    <HeaderDropdown
+      options={[
+        {
+          label: "Share League",
+          onSelect: shareLeague
+        },
+        {
+          label: "Delete League",
+          onSelect: async () => {
+            const removed = await removeLeagueId(leagueId);
+            console.log(removed);
+            if (removed) {
+              navigation.goBack();
             }
-          ]}
-        />
-      )}
-    </RemoveLeagueMutation>
+          }
+        }
+      ]}
+    />
   );
 }
 
