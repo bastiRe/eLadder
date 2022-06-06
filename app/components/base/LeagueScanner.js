@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { Camera } from "expo-camera";
 import styled from "styled-components/native";
 import parseUrl from "url-parse";
 
@@ -35,7 +36,7 @@ function LeagueScanner({ addLeagueId }) {
 
   useEffect(() => {
     const requestCameraPermission = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       if (status === "granted") {
         setHasCameraPermission(true);
       } else {

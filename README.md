@@ -24,6 +24,11 @@ For trying out the two parts of the eLadder see specific readmes:
 - [App readme](https://raw.githubusercontent.com/bastiRe/eladder/master/app/README.md)
 - [Server readme](https://raw.githubusercontent.com/bastiRe/eladder/master/server/README.md)
 
+## Upcoming
+
+- Switching the mobile app to Typescript and ReactQuery.
+- Switch the backend to Hasura in order to reduce maintenance and increase extensibility.
+
 ## License
 
 This project is released open source under the GPL v2 License. See [LICENSE](https://raw.githubusercontent.com/bastiRe/eladder/master/LICENSE) for more details.
