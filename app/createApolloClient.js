@@ -9,11 +9,11 @@ import { withClientState } from "apollo-link-state";
 import gql from "graphql-tag";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CachePersistor } from "apollo-cache-persist";
-import Environment from "./constants/Environment";
+import { endpointUrl } from "./constants/Environment";
 import * as Sentry from "sentry-expo";
 
 const httpLink = createHttpLink({
-  uri: Environment.apiUrl
+  uri: endpointUrl
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
