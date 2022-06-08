@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native";
 import moment from "moment";
 
 import { ErrorText, ScrollBackground, SectionHeaderText } from "../elements";
-import DeleteGameMutation from "../graphql/DeleteGameMutation";
+import { useDeleteGame } from "../../hooks/deleteGame";
 import GameRow from "./GameRow";
 
 const DeleteText = styled(ErrorText)`
@@ -15,24 +15,16 @@ const DeleteText = styled(ErrorText)`
 
 const Game = ({ game, leagueId, navigation }) => {
   const dateString = moment(game.date).format("MMMM Do YYYY, h:mm a");
+  const { deleteGame } = useDeleteGame(leagueId, {
+    onSuccess: () => navigation.goBack()
+  });
   return (
     <ScrollBackground>
       <SectionHeaderText>{dateString}</SectionHeaderText>
       <GameRow game={game} leagueId={leagueId} />
-      <DeleteGameMutation game={game} leagueId={leagueId}>
-        {({ deleteGameHandler }) => {
-          const onPress = async () => {
-            const deleted = await deleteGameHandler();
-            return deleted && navigation.goBack();
-          };
-
-          return (
-            <TouchableOpacity onPress={onPress}>
-              <DeleteText>Delete Game</DeleteText>
-            </TouchableOpacity>
-          );
-        }}
-      </DeleteGameMutation>
+      <TouchableOpacity onPress={() => deleteGame({ id: game.id })}>
+        <DeleteText>Delete Game</DeleteText>
+      </TouchableOpacity>
     </ScrollBackground>
   );
 };

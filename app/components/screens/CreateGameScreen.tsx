@@ -8,7 +8,11 @@ import { ModalBackground } from "../elements";
 
 function CreateGameScreen({ route, navigation }) {
   const leagueId = route.params.leagueId;
-  const { refetch } = useLeagueQuery(graphqlClient, { leagueId });
+  const { refetch } = useLeagueQuery(
+    graphqlClient,
+    { leagueId },
+    { enabled: false }
+  );
   const { isLoading, mutate } = useCreateGameMutation(graphqlClient, {
     onSuccess: () => {
       refetch();
