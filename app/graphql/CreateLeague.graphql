@@ -1,0 +1,7 @@
+mutation CreateLeague($title: String!) {
+  createLeague(title: $title) {
+    league {
+      id
+    }
+  }
+}

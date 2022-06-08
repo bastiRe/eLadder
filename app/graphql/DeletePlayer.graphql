@@ -1,0 +1,5 @@
+mutation deletePlayer($id: String!) {
+  deletePlayer(id: $id) {
+    success
+  }
+}

@@ -2,12 +2,14 @@ import React, { Fragment } from "react";
 import { ActivityIndicator } from "react-native";
 import * as Amplitude from "expo-analytics-amplitude";
 import { useLeagueIds } from "../../context/LeagueIds";
+import graphqlClient from "../../graphql/graphqlClient";
+import { useLeaguesQuery } from "../../graphql/generated";
+
 import LeaguesList from "../base/LeaguesList";
-import LeaguesQuery from "../graphql/LeaguesQuery";
 import AddLeagueFromLink from "../base/AddLeagueFromLink.js";
 
 function LeaguesListScreen({ navigation }) {
-  const openLeague = (leagueId, allLeagues) => {
+  const openLeague = (leagueId: string, allLeagues: any[]) => {
     if (navigation.isFocused()) {
       const league = allLeagues.find(league => league.id === leagueId);
       Amplitude.logEventWithPropertiesAsync("OpenLeague", { leagueId });
@@ -17,49 +19,33 @@ function LeaguesListScreen({ navigation }) {
       });
     }
   };
-  const openLeagueScanner = () => {
-    navigation.navigate("leagueScanner");
-  };
-
-  const openCreateLeague = () => {
-    navigation.navigate("createLeague");
-  };
-
-  const openLeaguesList = () => {
-    navigation.navigate("leaguesList");
-  };
 
   const { leagueIds } = useLeagueIds();
-
+  const {
+    data,
+    isLoading,
+    refetch,
+    isRefetching
+  } = useLeaguesQuery(graphqlClient, { leagueIds });
+  if (!data || isLoading) {
+    return <ActivityIndicator style={{ marginTop: 40 }} />;
+  }
   return (
-    <LeaguesQuery leagueIds={leagueIds}>
-      {({ data, refetch, networkStatus }) => {
-        let content;
-        if (!data || data.loading) {
-          content = <ActivityIndicator style={{ marginTop: 40 }} />;
-        } else {
-          content = (
-            <Fragment>
-              <AddLeagueFromLink
-                leagueIds={leagueIds}
-                openLeague={id => openLeague(id, data.leagues)}
-                openLeaguesList={() => openLeaguesList()}
-              />
-              <LeaguesList
-                leagues={data.leagues}
-                openLeague={id => openLeague(id, data.leagues)}
-                openLeagueScanner={openLeagueScanner}
-                openCreateLeague={openCreateLeague}
-                refreshing={networkStatus === 4}
-                refetch={refetch}
-              />
-            </Fragment>
-          );
-        }
-
-        return content;
-      }}
-    </LeaguesQuery>
+    <>
+      <AddLeagueFromLink
+        leagueIds={leagueIds}
+        openLeague={(id: string) => openLeague(id, data.leagues)}
+        openLeaguesList={() => navigation.navigate("leaguesList")}
+      />
+      <LeaguesList
+        leagues={data.leagues}
+        openLeague={(id: string) => openLeague(id, data.leagues)}
+        openLeagueScanner={() => navigation.navigate("leagueScanner")}
+        openCreateLeague={() => navigation.navigate("createLeague")}
+        refreshing={isRefetching}
+        refetch={refetch}
+      />
+    </>
   );
 }
 

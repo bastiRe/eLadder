@@ -33,7 +33,6 @@ const getApolloIds = async (): Promise<string[]> => {
 const getStoredIds = async (): Promise<string[]> => {
   const dataString = await AsyncStorage.getItem(storageKey);
   const savedIds = JSON.parse(dataString);
-  console.log(savedIds);
   return savedIds;
 };
 

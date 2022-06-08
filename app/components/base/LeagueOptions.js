@@ -30,7 +30,6 @@ function LeagueOptions({ navigation, route }) {
           label: "Delete League",
           onSelect: async () => {
             const removed = await removeLeagueId(leagueId);
-            console.log(removed);
             if (removed) {
               navigation.goBack();
             }

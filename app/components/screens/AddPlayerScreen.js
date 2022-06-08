@@ -2,7 +2,8 @@ import React from "react";
 import { Alert, StyleSheet, View, ActivityIndicator } from "react-native";
 import { Mutation } from "react-apollo";
 import * as Amplitude from "expo-analytics-amplitude";
-import LEAGUE from "../../graphql/League";
+import graphqlClient from "../../graphql/graphqlClient";
+import { useLeagueQuery } from "../../graphql/generated.ts";
 import CREATE_PLAYER from "../../graphql/CreatePlayer";
 import AddPlayerForm from "../base/AddPlayerForm";
 
@@ -16,11 +17,12 @@ const styles = StyleSheet.create({
 
 function AddPlayerScreen({ route, navigation }) {
   const leagueId = route.params.leagueId;
+  const { refetch } = useLeagueQuery(graphqlClient, { leagueId });
   return (
     <Mutation
       mutation={CREATE_PLAYER}
-      refetchQueries={[{ query: LEAGUE, variables: { leagueId } }]}
       onCompleted={() => {
+        refetch();
         navigation.goBack();
         Amplitude.logEventWithPropertiesAsync("CreatePlayer", { leagueId });
       }}

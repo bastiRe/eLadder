@@ -1,0 +1,7 @@
+mutation CreateGame($leagueId: String!, $teamIds: [TeamIds]!, $date: String!) {
+  createGame(leagueId: $leagueId, teamIds: $teamIds, date: $date) {
+    game {
+      id
+    }
+  }
+}

@@ -1,0 +1,12 @@
+overwrite: true
+# schema: "http://localhost:8080/v1/graphql"
+schema: "https://eladder.herokuapp.com"
+documents: "./**/*.graphql"
+generates:
+  ./graphql/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      fetcher: graphql-request

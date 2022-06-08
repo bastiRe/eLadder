@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ApolloProvider } from "react-apollo";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { LeagueIdsProvider } from "./context/LeagueIds";
 import { StatusBar, Platform, View } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
@@ -19,6 +20,8 @@ Sentry.init({
 });
 
 Amplitude.initializeAsync(amplitudeKey);
+
+const queryClient = new QueryClient();
 
 function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -52,12 +55,14 @@ function App() {
 
   return (
     <LeagueIdsProvider>
-      <ApolloProvider client={client} onLayout={onLayoutRootView}>
-        {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
-        <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-          <AppNavigator />
-        </View>
-      </ApolloProvider>
+      <QueryClientProvider client={queryClient}>
+        <ApolloProvider client={client} onLayout={onLayoutRootView}>
+          {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
+          <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+            <AppNavigator />
+          </View>
+        </ApolloProvider>
+      </QueryClientProvider>
     </LeagueIdsProvider>
   );
 }

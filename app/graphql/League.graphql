@@ -1,0 +1,21 @@
+query League($leagueId: String!) {
+  league(id: $leagueId) {
+    id
+    title
+    players {
+      id
+      name
+    }
+    games {
+      id
+      date
+      teams {
+        score
+        players {
+          id
+          name
+        }
+      }
+    }
+  }
+}

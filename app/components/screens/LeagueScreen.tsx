@@ -1,12 +1,11 @@
 import React from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
 import * as Amplitude from "expo-analytics-amplitude";
-import { Query } from "react-apollo";
 
+import { useLeagueQuery } from "../../graphql/generated.ts";
+import graphqlClient from "../../graphql/graphqlClient";
 import League from "../base/League";
-import LEAGUE from "../../graphql/League";
 import computeStandings from "../../helpers/computeStandings";
-import LeagueOptions from "../base/LeagueOptions";
 
 const styles = StyleSheet.create({
   activityIndicator: {
@@ -36,29 +35,24 @@ function LeagueScreen({ navigation, route }) {
   };
 
   const leagueId = route.params.leagueId;
-  return (
-    <Query
-      query={LEAGUE}
-      variables={{ leagueId }}
-      fetchPolicy="cache-and-network"
-    >
-      {({ loading, data, refetch }) => {
-        if (loading && !data.League)
-          return <ActivityIndicator style={styles.activityIndicator} />;
-        const league = computeStandings(data.league);
+  const { data, isLoading, refetch } = useLeagueQuery(graphqlClient, {
+    leagueId
+  });
 
-        return (
-          <League
-            league={league}
-            refetch={refetch}
-            refreshing={loading}
-            navigation={navigation}
-            openAddPlayer={() => openAddPlayer(data.league)}
-            openCreateGame={() => openCreateGame(data.league)}
-          />
-        );
-      }}
-    </Query>
+  if (isLoading || !data?.league)
+    return <ActivityIndicator style={styles.activityIndicator} />;
+
+  const league = computeStandings(data.league);
+
+  return (
+    <League
+      league={league}
+      refetch={refetch}
+      refreshing={isLoading}
+      navigation={navigation}
+      openAddPlayer={() => openAddPlayer(data.league)}
+      openCreateGame={() => openCreateGame(data.league)}
+    />
   );
 }
 
