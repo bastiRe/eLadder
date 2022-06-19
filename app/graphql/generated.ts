@@ -155,6 +155,14 @@ export type CreateLeagueMutationVariables = Exact<{
 
 export type CreateLeagueMutation = { __typename?: 'Mutation', createLeague?: { __typename?: 'createLeagueResponse', league?: { __typename?: 'League', id: string } | null } | null };
 
+export type CreatePlayerMutationVariables = Exact<{
+  name: Scalars['String'];
+  leagueId: Scalars['String'];
+}>;
+
+
+export type CreatePlayerMutation = { __typename?: 'Mutation', createPlayer?: { __typename?: 'createPlayerResponse', player?: { __typename?: 'Player', id: string, name: string } | null } | null };
+
 export type DeleteGameMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -226,6 +234,29 @@ export const useCreateLeagueMutation = <
     useMutation<CreateLeagueMutation, TError, CreateLeagueMutationVariables, TContext>(
       ['CreateLeague'],
       (variables?: CreateLeagueMutationVariables) => fetcher<CreateLeagueMutation, CreateLeagueMutationVariables>(client, CreateLeagueDocument, variables, headers)(),
+      options
+    );
+export const CreatePlayerDocument = `
+    mutation createPlayer($name: String!, $leagueId: String!) {
+  createPlayer(name: $name, leagueId: $leagueId) {
+    player {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useCreatePlayerMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreatePlayerMutation, TError, CreatePlayerMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreatePlayerMutation, TError, CreatePlayerMutationVariables, TContext>(
+      ['createPlayer'],
+      (variables?: CreatePlayerMutationVariables) => fetcher<CreatePlayerMutation, CreatePlayerMutationVariables>(client, CreatePlayerDocument, variables, headers)(),
       options
     );
 export const DeleteGameDocument = `

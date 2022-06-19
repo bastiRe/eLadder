@@ -1,0 +1,8 @@
+mutation createPlayer($name: String!, $leagueId: String!) {
+  createPlayer(name: $name, leagueId: $leagueId) {
+    player {
+      id
+      name
+    }
+  }
+}

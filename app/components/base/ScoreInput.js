@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.Border
   },
   plusContainer: {
-    borderBottomWidth: 1
+    borderBottomWidth: "1px"
   },
   minusContainer: {
     borderTopWidth: 1
