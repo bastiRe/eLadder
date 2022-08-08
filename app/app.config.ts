@@ -7,7 +7,7 @@ export default {
       "eLadder is a small app to create an online league to keep track of your games of Fifa, Foosball or similar. You can create a league, share your league with friends and keep track of your games. An ELO-algorithm calculates each player's points based on their games and gives you a table that never lies about who's currently the best among your league.",
     slug: "eLadder",
     privacy: "public",
-    version: "2.3.1",
+    version: "2.3.2",
     orientation: "portrait",
     primaryColor: "#33B67A",
     icon: "./assets/icons/icon.png",
@@ -28,7 +28,7 @@ export default {
     ios: {
       bundleIdentifier: "de.sebastianrehm.eladder",
       icon: "./assets/icons/ios-icon.png",
-      buildNumber: "2.3.1",
+      buildNumber: "2.3.2",
       config: {
         usesNonExemptEncryption: false
       }
@@ -36,7 +36,7 @@ export default {
     android: {
       package: "de.sebastianrehm.eladder",
       icon: "./assets/icons/icon.png",
-      versionCode: 8
+      versionCode: 9
     },
     hooks: {
       postPublish: [

@@ -24,7 +24,7 @@ export const Text = styled.Text`
 `;
 
 export const TitleText = styled(Text)`
-  font-size: 18;
+  font-size: 18px;
 `;
 
 export const CenteredText = styled(Text)`

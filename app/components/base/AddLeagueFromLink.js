@@ -13,31 +13,32 @@ function AddLeagueFromLink({ leagueIds, openLeague, openLeaguesList }) {
   const { addLeagueId } = useLeagueIds();
 
   const handleUrl = url => {
-    let { path, queryParams } = Linking.parse(url);
+    if (url) {
+      let { hostname, queryParams } = Linking.parse(url);
+      if (hostname !== "add_league") return;
 
-    if (path !== "add_league") return;
-
-    const { leagueId, leagueTitle } = queryParams;
-    if (leagueIds.indexOf(leagueId) !== -1) {
-      openLeague(leagueId);
-    } else if (leagueId && leagueTitle) {
-      Alert.alert(
-        "Add league",
-        `Do you want to add the league ${leagueTitle}?`,
-        [
-          {
-            text: "Yes",
-            onPress: async () => {
-              Amplitude.logEventWithPropertiesAsync("AddLeagueFromLink", {
-                leagueId
-              });
-              addLeagueId(leagueId);
-              openLeaguesList();
-            }
-          },
-          { text: "Cancel", style: "cancel" }
-        ]
-      );
+      const { leagueId, leagueTitle } = queryParams;
+      if (leagueIds.includes(leagueId)) {
+        openLeague(leagueId);
+      } else if (leagueId && leagueTitle) {
+        Alert.alert(
+          "Add league",
+          `Do you want to add the league ${leagueTitle}?`,
+          [
+            {
+              text: "Yes",
+              onPress: async () => {
+                Amplitude.logEventWithPropertiesAsync("AddLeagueFromLink", {
+                  leagueId
+                });
+                addLeagueId(leagueId);
+                openLeaguesList();
+              }
+            },
+            { text: "Cancel", style: "cancel" }
+          ]
+        );
+      }
     }
   };
 
