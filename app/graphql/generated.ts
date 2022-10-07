@@ -67,6 +67,14 @@ export type String_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
+/** ordering argument of a cursor */
+export enum Cursor_Ordering {
+  /** ascending ordering of the cursor */
+  Asc = 'ASC',
+  /** descending ordering of the cursor */
+  Desc = 'DESC'
+}
+
 /** columns and relationships of "games" */
 export type Games = {
   __typename?: 'games';
@@ -79,6 +87,8 @@ export type Games = {
   scores: Scalars['jsonb'];
   /** An array relationship */
   teams: Array<Teams>;
+  /** An aggregate relationship */
+  teams_aggregate: Teams_Aggregate;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -96,6 +106,38 @@ export type GamesTeamsArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Teams_Order_By>>;
   where?: InputMaybe<Teams_Bool_Exp>;
+};
+
+
+/** columns and relationships of "games" */
+export type GamesTeams_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Teams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Teams_Order_By>>;
+  where?: InputMaybe<Teams_Bool_Exp>;
+};
+
+/** aggregated selection of "games" */
+export type Games_Aggregate = {
+  __typename?: 'games_aggregate';
+  aggregate?: Maybe<Games_Aggregate_Fields>;
+  nodes: Array<Games>;
+};
+
+/** aggregate fields of "games" */
+export type Games_Aggregate_Fields = {
+  __typename?: 'games_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Games_Max_Fields>;
+  min?: Maybe<Games_Min_Fields>;
+};
+
+
+/** aggregate fields of "games" */
+export type Games_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Games_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** order by aggregate values of table "games" */
@@ -134,7 +176,7 @@ export type Games_Bool_Exp = {
 
 /** unique or primary key constraints on table "games" */
 export enum Games_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   GamesPkey = 'games_pkey'
 }
 
@@ -165,6 +207,16 @@ export type Games_Insert_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** aggregate max on columns */
+export type Games_Max_Fields = {
+  __typename?: 'games_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['String']>;
+  league_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
 /** order by max() on columns of table "games" */
 export type Games_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
@@ -172,6 +224,16 @@ export type Games_Max_Order_By = {
   id?: InputMaybe<Order_By>;
   league_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Games_Min_Fields = {
+  __typename?: 'games_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['String']>;
+  league_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "games" */
@@ -254,6 +316,24 @@ export type Games_Set_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** Streaming cursor of the table "games" */
+export type Games_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Games_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Games_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  date?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['String']>;
+  league_id?: InputMaybe<Scalars['String']>;
+  scores?: InputMaybe<Scalars['jsonb']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** update columns of table "games" */
 export enum Games_Update_Column {
   /** column name */
@@ -270,8 +350,29 @@ export enum Games_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+export type Games_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Games_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Games_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Games_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Games_Delete_Key_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Games_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Games_Set_Input>;
+  where: Games_Bool_Exp;
+};
+
+export type Jsonb_Cast_Exp = {
+  String?: InputMaybe<String_Comparison_Exp>;
+};
+
 /** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
 export type Jsonb_Comparison_Exp = {
+  _cast?: InputMaybe<Jsonb_Cast_Exp>;
   /** is the column contained in the given json value */
   _contained_in?: InputMaybe<Scalars['jsonb']>;
   /** does the column contain the given json value at the top level */
@@ -297,11 +398,15 @@ export type Jsonb_Comparison_Exp = {
 export type Leagues = {
   __typename?: 'leagues';
   created_at: Scalars['timestamptz'];
-  /** fetch data from the table: "games" */
+  /** An array relationship */
   games: Array<Games>;
+  /** An aggregate relationship */
+  games_aggregate: Games_Aggregate;
   id: Scalars['String'];
   /** An array relationship */
   players: Array<Players>;
+  /** An aggregate relationship */
+  players_aggregate: Players_Aggregate;
   title: Scalars['String'];
   updated_at: Scalars['timestamptz'];
 };
@@ -309,6 +414,16 @@ export type Leagues = {
 
 /** columns and relationships of "leagues" */
 export type LeaguesGamesArgs = {
+  distinct_on?: InputMaybe<Array<Games_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Games_Order_By>>;
+  where?: InputMaybe<Games_Bool_Exp>;
+};
+
+
+/** columns and relationships of "leagues" */
+export type LeaguesGames_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Games_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -326,6 +441,38 @@ export type LeaguesPlayersArgs = {
   where?: InputMaybe<Players_Bool_Exp>;
 };
 
+
+/** columns and relationships of "leagues" */
+export type LeaguesPlayers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Players_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Players_Order_By>>;
+  where?: InputMaybe<Players_Bool_Exp>;
+};
+
+/** aggregated selection of "leagues" */
+export type Leagues_Aggregate = {
+  __typename?: 'leagues_aggregate';
+  aggregate?: Maybe<Leagues_Aggregate_Fields>;
+  nodes: Array<Leagues>;
+};
+
+/** aggregate fields of "leagues" */
+export type Leagues_Aggregate_Fields = {
+  __typename?: 'leagues_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Leagues_Max_Fields>;
+  min?: Maybe<Leagues_Min_Fields>;
+};
+
+
+/** aggregate fields of "leagues" */
+export type Leagues_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Leagues_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
 /** Boolean expression to filter rows from the table "leagues". All fields are combined with a logical 'AND'. */
 export type Leagues_Bool_Exp = {
   _and?: InputMaybe<Array<Leagues_Bool_Exp>>;
@@ -341,7 +488,7 @@ export type Leagues_Bool_Exp = {
 
 /** unique or primary key constraints on table "leagues" */
 export enum Leagues_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   LeaguesPkey = 'leagues_pkey'
 }
 
@@ -353,6 +500,24 @@ export type Leagues_Insert_Input = {
   players?: InputMaybe<Players_Arr_Rel_Insert_Input>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Leagues_Max_Fields = {
+  __typename?: 'leagues_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Leagues_Min_Fields = {
+  __typename?: 'leagues_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "leagues" */
@@ -413,6 +578,22 @@ export type Leagues_Set_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** Streaming cursor of the table "leagues" */
+export type Leagues_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Leagues_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Leagues_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** update columns of table "leagues" */
 export enum Leagues_Update_Column {
   /** column name */
@@ -424,6 +605,12 @@ export enum Leagues_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
+
+export type Leagues_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Leagues_Set_Input>;
+  where: Leagues_Bool_Exp;
+};
 
 /** mutation root */
 export type Mutation_Root = {
@@ -464,18 +651,26 @@ export type Mutation_Root = {
   update_games?: Maybe<Games_Mutation_Response>;
   /** update single row of the table: "games" */
   update_games_by_pk?: Maybe<Games>;
+  /** update multiples rows of table: "games" */
+  update_games_many?: Maybe<Array<Maybe<Games_Mutation_Response>>>;
   /** update data of the table: "leagues" */
   update_leagues?: Maybe<Leagues_Mutation_Response>;
   /** update single row of the table: "leagues" */
   update_leagues_by_pk?: Maybe<Leagues>;
+  /** update multiples rows of table: "leagues" */
+  update_leagues_many?: Maybe<Array<Maybe<Leagues_Mutation_Response>>>;
   /** update data of the table: "players" */
   update_players?: Maybe<Players_Mutation_Response>;
   /** update single row of the table: "players" */
   update_players_by_pk?: Maybe<Players>;
+  /** update multiples rows of table: "players" */
+  update_players_many?: Maybe<Array<Maybe<Players_Mutation_Response>>>;
   /** update data of the table: "teams" */
   update_teams?: Maybe<Teams_Mutation_Response>;
   /** update single row of the table: "teams" */
   update_teams_by_pk?: Maybe<Teams>;
+  /** update multiples rows of table: "teams" */
+  update_teams_many?: Maybe<Array<Maybe<Teams_Mutation_Response>>>;
 };
 
 
@@ -608,6 +803,12 @@ export type Mutation_RootUpdate_Games_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Games_ManyArgs = {
+  updates: Array<Games_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_LeaguesArgs = {
   _set?: InputMaybe<Leagues_Set_Input>;
   where: Leagues_Bool_Exp;
@@ -618,6 +819,12 @@ export type Mutation_RootUpdate_LeaguesArgs = {
 export type Mutation_RootUpdate_Leagues_By_PkArgs = {
   _set?: InputMaybe<Leagues_Set_Input>;
   pk_columns: Leagues_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Leagues_ManyArgs = {
+  updates: Array<Leagues_Updates>;
 };
 
 
@@ -636,6 +843,12 @@ export type Mutation_RootUpdate_Players_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Players_ManyArgs = {
+  updates: Array<Players_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_TeamsArgs = {
   _inc?: InputMaybe<Teams_Inc_Input>;
   _set?: InputMaybe<Teams_Set_Input>;
@@ -648,6 +861,12 @@ export type Mutation_RootUpdate_Teams_By_PkArgs = {
   _inc?: InputMaybe<Teams_Inc_Input>;
   _set?: InputMaybe<Teams_Set_Input>;
   pk_columns: Teams_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Teams_ManyArgs = {
+  updates: Array<Teams_Updates>;
 };
 
 /** column ordering options */
@@ -677,6 +896,8 @@ export type Players = {
   name: Scalars['String'];
   /** An array relationship */
   teams: Array<Teams>;
+  /** An aggregate relationship */
+  teams_aggregate: Teams_Aggregate;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -688,6 +909,38 @@ export type PlayersTeamsArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Teams_Order_By>>;
   where?: InputMaybe<Teams_Bool_Exp>;
+};
+
+
+/** columns and relationships of "players" */
+export type PlayersTeams_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Teams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Teams_Order_By>>;
+  where?: InputMaybe<Teams_Bool_Exp>;
+};
+
+/** aggregated selection of "players" */
+export type Players_Aggregate = {
+  __typename?: 'players_aggregate';
+  aggregate?: Maybe<Players_Aggregate_Fields>;
+  nodes: Array<Players>;
+};
+
+/** aggregate fields of "players" */
+export type Players_Aggregate_Fields = {
+  __typename?: 'players_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Players_Max_Fields>;
+  min?: Maybe<Players_Min_Fields>;
+};
+
+
+/** aggregate fields of "players" */
+export type Players_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Players_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** order by aggregate values of table "players" */
@@ -720,9 +973,9 @@ export type Players_Bool_Exp = {
 
 /** unique or primary key constraints on table "players" */
 export enum Players_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "name", "league_id" */
   PlayersNameLeagueIdUnique = 'players_name_league_id_unique',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   PlayersPkey = 'players_pkey'
 }
 
@@ -737,6 +990,16 @@ export type Players_Insert_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** aggregate max on columns */
+export type Players_Max_Fields = {
+  __typename?: 'players_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['String']>;
+  league_id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
 /** order by max() on columns of table "players" */
 export type Players_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
@@ -744,6 +1007,16 @@ export type Players_Max_Order_By = {
   league_id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Players_Min_Fields = {
+  __typename?: 'players_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['String']>;
+  league_id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "players" */
@@ -817,6 +1090,23 @@ export type Players_Set_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** Streaming cursor of the table "players" */
+export type Players_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Players_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Players_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['String']>;
+  league_id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
 /** update columns of table "players" */
 export enum Players_Update_Column {
   /** column name */
@@ -831,28 +1121,51 @@ export enum Players_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+export type Players_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Players_Set_Input>;
+  where: Players_Bool_Exp;
+};
+
 export type Query_Root = {
   __typename?: 'query_root';
-  /** fetch data from the table: "games" */
+  /** An array relationship */
   games: Array<Games>;
+  /** An aggregate relationship */
+  games_aggregate: Games_Aggregate;
   /** fetch data from the table: "games" using primary key columns */
   games_by_pk?: Maybe<Games>;
   /** fetch data from the table: "leagues" */
   leagues: Array<Leagues>;
+  /** fetch aggregated fields from the table: "leagues" */
+  leagues_aggregate: Leagues_Aggregate;
   /** fetch data from the table: "leagues" using primary key columns */
   leagues_by_pk?: Maybe<Leagues>;
   /** An array relationship */
   players: Array<Players>;
+  /** An aggregate relationship */
+  players_aggregate: Players_Aggregate;
   /** fetch data from the table: "players" using primary key columns */
   players_by_pk?: Maybe<Players>;
   /** An array relationship */
   teams: Array<Teams>;
+  /** An aggregate relationship */
+  teams_aggregate: Teams_Aggregate;
   /** fetch data from the table: "teams" using primary key columns */
   teams_by_pk?: Maybe<Teams>;
 };
 
 
 export type Query_RootGamesArgs = {
+  distinct_on?: InputMaybe<Array<Games_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Games_Order_By>>;
+  where?: InputMaybe<Games_Bool_Exp>;
+};
+
+
+export type Query_RootGames_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Games_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -875,12 +1188,30 @@ export type Query_RootLeaguesArgs = {
 };
 
 
+export type Query_RootLeagues_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Leagues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Leagues_Order_By>>;
+  where?: InputMaybe<Leagues_Bool_Exp>;
+};
+
+
 export type Query_RootLeagues_By_PkArgs = {
   id: Scalars['String'];
 };
 
 
 export type Query_RootPlayersArgs = {
+  distinct_on?: InputMaybe<Array<Players_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Players_Order_By>>;
+  where?: InputMaybe<Players_Bool_Exp>;
+};
+
+
+export type Query_RootPlayers_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Players_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -903,32 +1234,66 @@ export type Query_RootTeamsArgs = {
 };
 
 
+export type Query_RootTeams_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Teams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Teams_Order_By>>;
+  where?: InputMaybe<Teams_Bool_Exp>;
+};
+
+
 export type Query_RootTeams_By_PkArgs = {
   id: Scalars['Int'];
 };
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
-  /** fetch data from the table: "games" */
+  /** An array relationship */
   games: Array<Games>;
+  /** An aggregate relationship */
+  games_aggregate: Games_Aggregate;
   /** fetch data from the table: "games" using primary key columns */
   games_by_pk?: Maybe<Games>;
+  /** fetch data from the table in a streaming manner : "games" */
+  games_stream: Array<Games>;
   /** fetch data from the table: "leagues" */
   leagues: Array<Leagues>;
+  /** fetch aggregated fields from the table: "leagues" */
+  leagues_aggregate: Leagues_Aggregate;
   /** fetch data from the table: "leagues" using primary key columns */
   leagues_by_pk?: Maybe<Leagues>;
+  /** fetch data from the table in a streaming manner : "leagues" */
+  leagues_stream: Array<Leagues>;
   /** An array relationship */
   players: Array<Players>;
+  /** An aggregate relationship */
+  players_aggregate: Players_Aggregate;
   /** fetch data from the table: "players" using primary key columns */
   players_by_pk?: Maybe<Players>;
+  /** fetch data from the table in a streaming manner : "players" */
+  players_stream: Array<Players>;
   /** An array relationship */
   teams: Array<Teams>;
+  /** An aggregate relationship */
+  teams_aggregate: Teams_Aggregate;
   /** fetch data from the table: "teams" using primary key columns */
   teams_by_pk?: Maybe<Teams>;
+  /** fetch data from the table in a streaming manner : "teams" */
+  teams_stream: Array<Teams>;
 };
 
 
 export type Subscription_RootGamesArgs = {
+  distinct_on?: InputMaybe<Array<Games_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Games_Order_By>>;
+  where?: InputMaybe<Games_Bool_Exp>;
+};
+
+
+export type Subscription_RootGames_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Games_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -942,7 +1307,23 @@ export type Subscription_RootGames_By_PkArgs = {
 };
 
 
+export type Subscription_RootGames_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Games_Stream_Cursor_Input>>;
+  where?: InputMaybe<Games_Bool_Exp>;
+};
+
+
 export type Subscription_RootLeaguesArgs = {
+  distinct_on?: InputMaybe<Array<Leagues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Leagues_Order_By>>;
+  where?: InputMaybe<Leagues_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeagues_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Leagues_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -956,7 +1337,23 @@ export type Subscription_RootLeagues_By_PkArgs = {
 };
 
 
+export type Subscription_RootLeagues_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Leagues_Stream_Cursor_Input>>;
+  where?: InputMaybe<Leagues_Bool_Exp>;
+};
+
+
 export type Subscription_RootPlayersArgs = {
+  distinct_on?: InputMaybe<Array<Players_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Players_Order_By>>;
+  where?: InputMaybe<Players_Bool_Exp>;
+};
+
+
+export type Subscription_RootPlayers_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Players_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -970,7 +1367,23 @@ export type Subscription_RootPlayers_By_PkArgs = {
 };
 
 
+export type Subscription_RootPlayers_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Players_Stream_Cursor_Input>>;
+  where?: InputMaybe<Players_Bool_Exp>;
+};
+
+
 export type Subscription_RootTeamsArgs = {
+  distinct_on?: InputMaybe<Array<Teams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Teams_Order_By>>;
+  where?: InputMaybe<Teams_Bool_Exp>;
+};
+
+
+export type Subscription_RootTeams_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Teams_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -981,6 +1394,13 @@ export type Subscription_RootTeamsArgs = {
 
 export type Subscription_RootTeams_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootTeams_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Teams_Stream_Cursor_Input>>;
+  where?: InputMaybe<Teams_Bool_Exp>;
 };
 
 /** columns and relationships of "teams" */
@@ -996,6 +1416,36 @@ export type Teams = {
   player_id: Scalars['String'];
   team_id: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "teams" */
+export type Teams_Aggregate = {
+  __typename?: 'teams_aggregate';
+  aggregate?: Maybe<Teams_Aggregate_Fields>;
+  nodes: Array<Teams>;
+};
+
+/** aggregate fields of "teams" */
+export type Teams_Aggregate_Fields = {
+  __typename?: 'teams_aggregate_fields';
+  avg?: Maybe<Teams_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Teams_Max_Fields>;
+  min?: Maybe<Teams_Min_Fields>;
+  stddev?: Maybe<Teams_Stddev_Fields>;
+  stddev_pop?: Maybe<Teams_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Teams_Stddev_Samp_Fields>;
+  sum?: Maybe<Teams_Sum_Fields>;
+  var_pop?: Maybe<Teams_Var_Pop_Fields>;
+  var_samp?: Maybe<Teams_Var_Samp_Fields>;
+  variance?: Maybe<Teams_Variance_Fields>;
+};
+
+
+/** aggregate fields of "teams" */
+export type Teams_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Teams_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** order by aggregate values of table "teams" */
@@ -1018,6 +1468,13 @@ export type Teams_Arr_Rel_Insert_Input = {
   data: Array<Teams_Insert_Input>;
   /** upsert condition */
   on_conflict?: InputMaybe<Teams_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Teams_Avg_Fields = {
+  __typename?: 'teams_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "teams" */
@@ -1043,7 +1500,7 @@ export type Teams_Bool_Exp = {
 
 /** unique or primary key constraints on table "teams" */
 export enum Teams_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   TeamsPkey = 'teams_pkey'
 }
 
@@ -1065,6 +1522,17 @@ export type Teams_Insert_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** aggregate max on columns */
+export type Teams_Max_Fields = {
+  __typename?: 'teams_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  game_id?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  player_id?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
 /** order by max() on columns of table "teams" */
 export type Teams_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
@@ -1073,6 +1541,17 @@ export type Teams_Max_Order_By = {
   player_id?: InputMaybe<Order_By>;
   team_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Teams_Min_Fields = {
+  __typename?: 'teams_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  game_id?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  player_id?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "teams" */
@@ -1144,10 +1623,24 @@ export type Teams_Set_Input = {
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
+/** aggregate stddev on columns */
+export type Teams_Stddev_Fields = {
+  __typename?: 'teams_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
+};
+
 /** order by stddev() on columns of table "teams" */
 export type Teams_Stddev_Order_By = {
   id?: InputMaybe<Order_By>;
   team_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Teams_Stddev_Pop_Fields = {
+  __typename?: 'teams_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "teams" */
@@ -1156,10 +1649,42 @@ export type Teams_Stddev_Pop_Order_By = {
   team_id?: InputMaybe<Order_By>;
 };
 
+/** aggregate stddev_samp on columns */
+export type Teams_Stddev_Samp_Fields = {
+  __typename?: 'teams_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
+};
+
 /** order by stddev_samp() on columns of table "teams" */
 export type Teams_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   team_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "teams" */
+export type Teams_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Teams_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Teams_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  game_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  player_id?: InputMaybe<Scalars['String']>;
+  team_id?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate sum on columns */
+export type Teams_Sum_Fields = {
+  __typename?: 'teams_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "teams" */
@@ -1184,16 +1709,45 @@ export enum Teams_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+export type Teams_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Teams_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Teams_Set_Input>;
+  where: Teams_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Teams_Var_Pop_Fields = {
+  __typename?: 'teams_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
+};
+
 /** order by var_pop() on columns of table "teams" */
 export type Teams_Var_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
   team_id?: InputMaybe<Order_By>;
 };
 
+/** aggregate var_samp on columns */
+export type Teams_Var_Samp_Fields = {
+  __typename?: 'teams_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
+};
+
 /** order by var_samp() on columns of table "teams" */
 export type Teams_Var_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
   team_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Teams_Variance_Fields = {
+  __typename?: 'teams_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "teams" */
