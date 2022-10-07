@@ -1,0 +1,49 @@
+table:
+  name: teams
+  schema: public
+object_relationships:
+  - name: game
+    using:
+      foreign_key_constraint_on: game_id
+  - name: player
+    using:
+      foreign_key_constraint_on: player_id
+insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+        - game_id
+        - player_id
+        - id
+        - team_id
+        - created_at
+        - updated_at
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - game_id
+        - player_id
+        - id
+        - team_id
+        - created_at
+        - updated_at
+      filter: {}
+update_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - game_id
+        - player_id
+        - id
+        - team_id
+        - created_at
+        - updated_at
+      filter: {}
+      check: {}
+delete_permissions:
+  - role: anonymous
+    permission:
+      backend_only: false
+      filter: {}

@@ -1,5 +1,5 @@
 mutation deletePlayer($id: String!) {
-  deletePlayer(id: $id) {
-    success
+  delete_players_by_pk(id: $id) {
+    name
   }
 }

@@ -28,10 +28,11 @@ function CreateGameScreen({ route, navigation }) {
     content = (
       <CreateGameForm
         players={route.params.players}
-        onSubmit={({ teamIds, date }) => {
+        onSubmit={({ teamIds, date, scores }) => {
           mutate({
             teamIds,
             leagueId,
+            scores,
             date
           });
         }}

@@ -30,6 +30,7 @@ function LeaguesListScreen({ navigation }) {
   if (!data || isLoading) {
     return <ActivityIndicator style={{ marginTop: 40 }} />;
   }
+
   return (
     <>
       <AddLeagueFromLink

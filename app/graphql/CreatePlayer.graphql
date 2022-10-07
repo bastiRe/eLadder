@@ -1,8 +1,6 @@
 mutation createPlayer($name: String!, $leagueId: String!) {
-  createPlayer(name: $name, leagueId: $leagueId) {
-    player {
-      id
-      name
-    }
+  insert_players_one(object: { name: $name, league_id: $leagueId }) {
+    id
+    name
   }
 }

@@ -1,0 +1,9 @@
+- name: eladder
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: ELADDER_DB_URL
+      isolation_level: read-committed
+      use_prepared_statements: false
+  tables: "!include eladder/tables/tables.yaml"

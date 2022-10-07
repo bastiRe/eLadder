@@ -11,7 +11,7 @@
 The eLadder project consists of two parts:
 
 - The app is built as a React Native app using [Expo](https://expo.io) and published to both app stores.
-- The backend is a NodeJS server using Graphql through apollo-server.
+- A backend using Hasura to provide an easy to use GraphQL API
 
 ## Goal of this project
 
@@ -22,12 +22,7 @@ This project was started as a side project to learn different new technologies (
 For trying out the two parts of the eLadder see specific readmes:
 
 - [App readme](https://raw.githubusercontent.com/bastiRe/eladder/master/app/README.md)
-- [Server readme](https://raw.githubusercontent.com/bastiRe/eladder/master/server/README.md)
-
-## Upcoming
-
-- Switching the mobile app to Typescript and ReactQuery.
-- Switch the backend to Hasura in order to reduce maintenance and increase extensibility.
+- [Hasura readme](https://raw.githubusercontent.com/bastiRe/eladder/master/hasura/README.md)
 
 ## License
 

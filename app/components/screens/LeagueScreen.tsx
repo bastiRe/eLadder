@@ -39,10 +39,10 @@ function LeagueScreen({ navigation, route }) {
     leagueId
   });
 
-  if (isLoading || !data?.league)
+  if (isLoading || !data?.leagues_by_pk)
     return <ActivityIndicator style={styles.activityIndicator} />;
 
-  const league = computeStandings(data.league);
+  const league = computeStandings(data.leagues_by_pk);
 
   return (
     <League
@@ -50,8 +50,8 @@ function LeagueScreen({ navigation, route }) {
       refetch={refetch}
       refreshing={isLoading}
       navigation={navigation}
-      openAddPlayer={() => openAddPlayer(data.league)}
-      openCreateGame={() => openCreateGame(data.league)}
+      openAddPlayer={() => openAddPlayer(data.leagues_by_pk)}
+      openCreateGame={() => openCreateGame(data.leagues_by_pk)}
     />
   );
 }

@@ -1,7 +1,17 @@
-mutation CreateGame($leagueId: String!, $teamIds: [TeamIds]!, $date: String!) {
-  createGame(leagueId: $leagueId, teamIds: $teamIds, date: $date) {
-    game {
-      id
+mutation CreateGame(
+  $leagueId: String!
+  $date: timestamptz!
+  $teamIds: [teams_insert_input!] = {}
+  $scores: jsonb = ""
+) {
+  insert_games_one(
+    object: {
+      league_id: $leagueId
+      date: $date
+      teams: { data: $teamIds }
+      scores: $scores
     }
+  ) {
+    id
   }
 }

@@ -1,5 +1,5 @@
 query League($leagueId: String!) {
-  league(id: $leagueId) {
+  leagues_by_pk(id: $leagueId) {
     id
     title
     players {
@@ -9,9 +9,10 @@ query League($leagueId: String!) {
     games {
       id
       date
+      scores
       teams {
-        score
-        players {
+        team_id
+        player {
           id
           name
         }

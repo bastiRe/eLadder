@@ -36,10 +36,10 @@ function CreateGameForm({ players, onSubmit }) {
 
   const submitForm = () => {
     const teamIds = [
-      { score: state.score0, playerIds: state.team0.map(p => p.id) },
-      { score: state.score1, playerIds: state.team1.map(p => p.id) }
+      ...state.team0.map(p => ({ team_id: 0, player_id: p.id })),
+      ...state.team1.map(p => ({ team_id: 1, player_id: p.id })),
     ];
-    onSubmit({ teamIds, date: state.date });
+    onSubmit({ teamIds, date: state.date, scores: [state.score0, state.score1] });
   };
 
   return (

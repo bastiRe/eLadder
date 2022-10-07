@@ -1,0 +1,51 @@
+table:
+  name: leagues
+  schema: public
+array_relationships:
+  - name: games
+    using:
+      foreign_key_constraint_on:
+        column: league_id
+        table:
+          name: games
+          schema: public
+  - name: players
+    using:
+      foreign_key_constraint_on:
+        column: league_id
+        table:
+          name: players
+          schema: public
+insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+        - id
+        - title
+        - created_at
+        - updated_at
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+        - title
+        - created_at
+        - updated_at
+      filter: {}
+update_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+        - title
+        - created_at
+        - updated_at
+      filter: {}
+      check: {}
+delete_permissions:
+  - role: anonymous
+    permission:
+      backend_only: false
+      filter: {}

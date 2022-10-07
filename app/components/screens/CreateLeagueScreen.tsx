@@ -10,8 +10,8 @@ import { ModalBackground } from "../elements";
 function CreateLeagueScreen({ navigation }) {
   const { addLeagueId } = useLeagueIds();
   const { isLoading, mutate } = useCreateLeagueMutation(graphqlClient, {
-    onSuccess: ({ createLeague }) => {
-      const leagueId = createLeague.league.id;
+    onSuccess: (mutation) => {
+      const leagueId = mutation.insert_leagues_one.id;
       addLeagueId(leagueId);
       navigation.goBack();
     }

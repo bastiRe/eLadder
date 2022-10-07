@@ -1,4 +1,5 @@
 import React from "react";
+import { ComputedGame } from "../../types/computed";
 import { TouchableHighlight } from "react-native";
 import Team from "./Team";
 import styled from "styled-components/native";
@@ -20,7 +21,13 @@ const ScoreText = styled(CenteredText)`
   width: 60px;
 `;
 
-const GameRow = ({ game, leagueId, onPress }) => {
+interface GameRowProps {
+  game: ComputedGame;
+  leagueId: string;
+  onPress: any;
+}
+
+const GameRow = ({ game, leagueId, onPress }: GameRowProps) => {
   const { deleteGame } = useDeleteGame(leagueId);
   return (
     <TouchableHighlight
@@ -32,12 +39,12 @@ const GameRow = ({ game, leagueId, onPress }) => {
           {game.points >= 0 ? "+" : "-"}
           {Math.abs(game.points)}
         </Points>
-        <Team team={game.teams[0].players} />
+        <Team team={game.teams.filter((teamPlayer) => teamPlayer.team_id === 0)} />
         <ScoreText>
           {" "}
-          {game.teams[0].score}:{game.teams[1].score}{" "}
+          {game.scores[0]}:{game.scores[1]}{" "}
         </ScoreText>
-        <Team team={game.teams[1].players} align="right" />
+        <Team team={game.teams.filter((teamPlayer) => teamPlayer.team_id === 1)} align="right" />
         <Points>
           {game.points <= 0 ? "+" : "-"}
           {Math.abs(game.points)}

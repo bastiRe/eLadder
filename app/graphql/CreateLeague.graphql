@@ -1,7 +1,5 @@
 mutation CreateLeague($title: String!) {
-  createLeague(title: $title) {
-    league {
-      id
-    }
+  insert_leagues_one(object: { title: $title }) {
+    id
   }
 }

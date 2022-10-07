@@ -1,5 +1,5 @@
-query Leagues($leagueIds: [String!]!) {
-  leagues(ids: $leagueIds) {
+query Leagues($leagueIds: [String!]) {
+  leagues(where: { id: { _in: $leagueIds } }) {
     id
     title
     players {
@@ -9,9 +9,9 @@ query Leagues($leagueIds: [String!]!) {
     games {
       id
       date
+      scores
       teams {
-        score
-        players {
+        player {
           id
           name
         }
