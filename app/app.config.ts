@@ -28,7 +28,7 @@ export default {
     ios: {
       bundleIdentifier: "de.sebastianrehm.eladder",
       icon: "./assets/icons/ios-icon.png",
-      buildNumber: "2.3.2",
+      buildNumber: "2.4.0",
       config: {
         usesNonExemptEncryption: false
       }
@@ -36,7 +36,7 @@ export default {
     android: {
       package: "de.sebastianrehm.eladder",
       icon: "./assets/icons/icon.png",
-      versionCode: 9
+      versionCode: 10
     },
     hooks: {
       postPublish: [
