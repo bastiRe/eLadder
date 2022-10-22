@@ -2,6 +2,7 @@
 node_modules/
 .vscode/
 .expo/
+app/eladder-service-account.json
 
 dist/
 postgres-data/
